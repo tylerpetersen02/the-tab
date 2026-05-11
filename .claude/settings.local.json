@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(Start-Sleep -Seconds 3)",
+      "Bash(Get-Content \"C:\\\\Users\\\\Tyler\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-Tyler-Documents-the-tab\\\\43b8a268-b9ba-43ee-ad4d-44e6b2f9f120\\\\tasks\\\\bfqgw0s57.output\" -Tail 20)",
+      "PowerShell(taskkill *)",
+      "Bash(git checkout *)",
+      "Bash(git clean *)",
+      "Bash(npx shadcn-ui@latest init -y)",
+      "Bash(npx shadcn@latest *)",
+      "Bash(yes \"\")",
+      "Bash(taskkill *)",
+      "Bash(npx tsc *)",
+      "Bash(grep -E \"error TS|^$\")",
+      "WebSearch",
+      "Bash(Get-Process node *)",
+      "Bash(Stop-Process -Force)",
+      "Bash(Remove-Item *)",
+      "PowerShell(Get-Process *)"
+    ]
+  }
+}
