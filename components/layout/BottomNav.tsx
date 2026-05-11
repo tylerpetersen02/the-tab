@@ -17,7 +17,7 @@ export function BottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 bg-white border-t border-medium-gray flex items-center justify-around shadow-md"
+      className="fixed bottom-0 left-0 right-0 bg-white border-t border-[#D4D0CC] flex items-center justify-around shadow-md"
       style={{
         height: "calc(64px + max(0px, env(safe-area-inset-bottom)))",
         paddingBottom: "max(0px, env(safe-area-inset-bottom))",
@@ -32,7 +32,7 @@ export function BottomNav() {
             key={tab.href}
             href={tab.href}
             className={`flex items-center justify-center flex-1 transition-colors ${
-              isActive ? "text-orange" : "text-dark-gray"
+              isActive ? "text-[#ff7d00]" : "text-[#6B7280]"
             }`}
           >
             <Icon size={26} />

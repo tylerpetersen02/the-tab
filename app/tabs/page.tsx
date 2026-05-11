@@ -1,123 +1,222 @@
 "use client";
 
-import { Page } from "@/components/layout/Page";
-import { Button } from "@/components/ui/Button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/Card";
-import { Badge } from "@/components/ui/badge";
-import { Plus } from "lucide-react";
 import { useState } from "react";
+import { Flame } from "lucide-react";
+import { AppPage } from "@/components/common/AppPage";
+import { AppHeader } from "@/components/common/AppHeader";
+import { SectionHeader } from "@/components/common/SectionHeader";
+import { TabsQuickActions } from "@/components/tabs/TabsQuickActions";
+import { TabsSearch } from "@/components/tabs/TabsSearch";
+import { TabsFilterPills } from "@/components/tabs/TabsFilterPills";
+import { TabListCard } from "@/components/tabs/TabListCard";
+import { TabsEmptyState } from "@/components/tabs/TabsEmptyState";
+import { CreateTabSheet } from "@/components/tabs/CreateTabSheet";
+import { JoinCodeSheet } from "@/components/tabs/JoinCodeSheet";
+
+type FilterType = "all" | "live" | "recent" | "mine" | "archived";
+
+interface Tab {
+  id: string;
+  title: string;
+  description?: string;
+  isLive: boolean;
+  memberCount: number;
+  createdTime: string;
+  memberInitials: string[];
+  category: "live" | "recent" | "mine" | "archived";
+}
+
+const mockTabs: Tab[] = [
+  {
+    id: "tab-1",
+    title: "Friday Night Alpha",
+    description: "The crew's weekly golf outing + drinks",
+    isLive: true,
+    memberCount: 6,
+    createdTime: "2h ago",
+    memberInitials: ["TP", "MK", "RY", "DN", "AM", "JR"],
+    category: "live",
+  },
+  {
+    id: "tab-2",
+    title: "Post Golf Boys",
+    description: "After 18 at Torrey Pines",
+    isLive: true,
+    memberCount: 4,
+    createdTime: "3h ago",
+    memberInitials: ["MK", "RY", "TP"],
+    category: "live",
+  },
+  {
+    id: "tab-3",
+    title: "Brewery Crawl",
+    description: "Downtown San Diego crawl",
+    isLive: true,
+    memberCount: 5,
+    createdTime: "4h ago",
+    memberInitials: ["AM", "JR", "DN"],
+    category: "live",
+  },
+  {
+    id: "tab-4",
+    title: "Taco Tuesday",
+    isLive: false,
+    memberCount: 8,
+    createdTime: "2 days ago",
+    memberInitials: ["TP", "MK", "RY", "DN", "AM", "JR", "CH", "BR"],
+    category: "recent",
+  },
+  {
+    id: "tab-5",
+    title: "Beach Day",
+    isLive: false,
+    memberCount: 12,
+    createdTime: "1 week ago",
+    memberInitials: ["TP", "MK", "RY", "DN"],
+    category: "recent",
+  },
+  {
+    id: "tab-6",
+    title: "My Solo Tab",
+    isLive: false,
+    memberCount: 1,
+    createdTime: "3 days ago",
+    memberInitials: ["TP"],
+    category: "mine",
+  },
+  {
+    id: "tab-7",
+    title: "Vegas Trip 2025",
+    isLive: false,
+    memberCount: 10,
+    createdTime: "1 month ago",
+    memberInitials: ["TP", "MK", "RY"],
+    category: "archived",
+  },
+];
 
 export default function TabsPage() {
-  const [filter, setFilter] = useState<"active" | "ended">("active");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeFilter, setActiveFilter] = useState<FilterType>("all");
+  const [isCreateSheetOpen, setIsCreateSheetOpen] = useState(false);
+  const [isJoinCodeSheetOpen, setIsJoinCodeSheetOpen] = useState(false);
 
-  const tabs = [
-    {
-      id: 1,
-      title: "Friday Night Alpha",
-      location: "Las Vegas",
-      members: 4,
-      status: "active" as const,
-      total: 145.75,
-    },
-    {
-      id: 2,
-      title: "Vegas Vibes 2",
-      location: "Las Vegas",
-      members: 6,
-      status: "active" as const,
-      total: 218.5,
-    },
-    {
-      id: 3,
-      title: "Paso Trip",
-      location: "Paso Robles",
-      members: 6,
-      status: "ended" as const,
-      total: 542.3,
-    },
-    {
-      id: 4,
-      title: "Weekend Kickoff",
-      location: "San Francisco",
-      members: 5,
-      status: "ended" as const,
-      total: 387.45,
-    },
-  ];
+  const filteredTabs = mockTabs.filter((tab) => {
+    const matchesSearch = tab.title
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
 
-  const filteredTabs = tabs.filter((tab) => tab.status === filter);
+    if (activeFilter === "all") return matchesSearch;
+    return matchesSearch && tab.category === activeFilter;
+  });
+
+  const liveTabs = filteredTabs.filter((tab) => tab.isLive);
+  const recentTabs = filteredTabs.filter((tab) => !tab.isLive);
+
+  const handleTabClick = (tabId: string) => {
+    console.log("Navigate to tab:", tabId);
+    // TODO: Navigate to tab detail page
+  };
+
+  const handleJoinTab = (e: React.MouseEvent, tabId: string) => {
+    e.stopPropagation();
+    console.log("Join tab:", tabId);
+    // TODO: Handle join tab action
+  };
 
   return (
-    <Page title="Tabs">
-      <div className="space-y-4">
-        {/* Create New Tab Button */}
-        <Button className="w-full gap-2">
-          <Plus size={20} />
-          Start New Tab
-        </Button>
+    <AppPage>
+      <AppHeader title="The Tab" subtitle="Manage your sessions." />
 
-        {/* Filter Tabs */}
-        <div className="flex gap-2">
-          {(["active", "ended"] as const).map((status) => (
-            <button
-              key={status}
-              onClick={() => setFilter(status)}
-              className={`px-4 py-2 rounded-full font-medium transition-colors ${
-                filter === status
-                  ? "bg-orange text-white"
-                  : "bg-light-gray text-ink"
-              }`}
-            >
-              {status === "active" ? "Active" : "Ended"}
-            </button>
-          ))}
+      <div className="px-4">
+        <TabsQuickActions
+          onCreateTab={() => setIsCreateSheetOpen(true)}
+          onJoinCode={() => setIsJoinCodeSheetOpen(true)}
+        />
+
+        <TabsSearch value={searchQuery} onChange={setSearchQuery} />
+
+        <TabsFilterPills
+          activeFilter={activeFilter}
+          onFilterChange={setActiveFilter}
+        />
+      </div>
+
+      {filteredTabs.length === 0 ? (
+        <div className="mt-8 px-4">
+          <TabsEmptyState
+            title="No tabs found"
+            description="Try adjusting your filters or search"
+          />
         </div>
+      ) : (
+        <div className="mt-6 px-4">
+          {liveTabs.length > 0 && (
+            <div>
+              <SectionHeader
+                title="Live Now"
+                icon={<Flame className="h-4 w-4 fill-current text-[#ff7d00]" />}
+              />
+              <div className="mt-3">
+                {liveTabs.map((tab) => (
+                  <TabListCard
+                    key={tab.id}
+                    id={tab.id}
+                    title={tab.title}
+                    isLive={tab.isLive}
+                    memberCount={tab.memberCount}
+                    createdTime={tab.createdTime}
+                    description={tab.description}
+                    memberInitials={tab.memberInitials}
+                    onClick={() => handleTabClick(tab.id)}
+                    onJoinClick={(e) => handleJoinTab(e, tab.id)}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
 
-        {/* Tab Cards */}
-        <div className="space-y-3">
-          {filteredTabs.length > 0 ? (
-            filteredTabs.map((tab) => (
-              <Card key={tab.id}>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <CardTitle>{tab.title}</CardTitle>
-                      <CardDescription>
-                        {tab.location} • {tab.members} members
-                      </CardDescription>
-                    </div>
-                    <Badge
-                      variant={tab.status === "active" ? "default" : "secondary"}
-                    >
-                      {tab.status === "active" ? "ACTIVE" : "ENDED"}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="pt-2 border-t border-medium-gray">
-                    <p className="text-xs text-dark-gray">Total</p>
-                    <p className="text-2xl font-bold text-orange mt-1">
-                      ${tab.total.toFixed(2)}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))
-          ) : (
-            <div className="text-center py-8">
-              <p className="text-dark-gray">
-                {filter === "active" ? "No active tabs" : "No ended tabs"}
-              </p>
+          {recentTabs.length > 0 && (
+            <div className="mt-8">
+              <SectionHeader title="Recent Tabs" />
+              <div className="mt-3">
+                {recentTabs.map((tab) => (
+                  <TabListCard
+                    key={tab.id}
+                    id={tab.id}
+                    title={tab.title}
+                    isLive={tab.isLive}
+                    memberCount={tab.memberCount}
+                    createdTime={tab.createdTime}
+                    description={tab.description}
+                    memberInitials={tab.memberInitials}
+                    onClick={() => handleTabClick(tab.id)}
+                    onJoinClick={(e) => handleJoinTab(e, tab.id)}
+                  />
+                ))}
+              </div>
             </div>
           )}
         </div>
-      </div>
-    </Page>
+      )}
+
+      <CreateTabSheet
+        isOpen={isCreateSheetOpen}
+        onClose={() => setIsCreateSheetOpen(false)}
+        onSubmit={(data) => {
+          console.log("Create tab:", data);
+          setIsCreateSheetOpen(false);
+        }}
+      />
+
+      <JoinCodeSheet
+        isOpen={isJoinCodeSheetOpen}
+        onClose={() => setIsJoinCodeSheetOpen(false)}
+        onSubmit={(code) => {
+          console.log("Join with code:", code);
+          setIsJoinCodeSheetOpen(false);
+        }}
+      />
+    </AppPage>
   );
 }

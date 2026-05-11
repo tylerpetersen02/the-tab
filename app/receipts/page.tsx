@@ -1,8 +1,5 @@
 "use client";
 
-import { Page } from "@/components/layout/Page";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 
 export default function ReceiptsPage() {
@@ -85,112 +82,141 @@ export default function ReceiptsPage() {
   ];
 
   return (
-    <Page title="Receipts">
-      <div className="space-y-4">
-        {/* Filter Tabs */}
-        <div className="flex gap-2">
-          <button
-            onClick={() => setFilter("stats")}
-            className={`px-4 py-2 rounded-full font-medium transition-colors ${
-              filter === "stats" ? "bg-orange text-white" : "bg-light-gray text-ink"
-            }`}
-          >
-            Stats
-          </button>
-          <button
-            onClick={() => setFilter("badges")}
-            className={`px-4 py-2 rounded-full font-medium transition-colors ${
-              filter === "badges" ? "bg-orange text-white" : "bg-light-gray text-ink"
-            }`}
-          >
-            Badges
-          </button>
-        </div>
+    <main className="min-h-screen bg-[#FAFAF8] text-[#001524]">
+      <div className="mx-auto w-full max-w-md pb-36">
+        <div className="px-4">
+          <div className="pt-4 pb-3">
+            <h1 className="text-[32px] font-black italic tracking-tight text-[#001524]">
+              Receipts
+            </h1>
+          </div>
 
-        {/* Stats Section */}
-        {filter === "stats" && (
-          <div className="grid grid-cols-2 gap-4">
-            {stats.map((stat) => (
-              <Card key={stat.id}>
-                <CardContent className="pt-6">
+          {/* Filter Tabs */}
+          <div className="flex gap-2 mt-5">
+            <button
+              onClick={() => setFilter("stats")}
+              className={`flex-shrink-0 rounded-full px-4 py-1.5 text-sm font-bold transition-colors ${
+                filter === "stats"
+                  ? "bg-[#ff7d00] text-white"
+                  : "bg-[#F3F4F6] text-[#001524] hover:bg-[#E5E7EB]"
+              }`}
+            >
+              Stats
+            </button>
+            <button
+              onClick={() => setFilter("badges")}
+              className={`flex-shrink-0 rounded-full px-4 py-1.5 text-sm font-bold transition-colors ${
+                filter === "badges"
+                  ? "bg-[#ff7d00] text-white"
+                  : "bg-[#F3F4F6] text-[#001524] hover:bg-[#E5E7EB]"
+              }`}
+            >
+              Badges
+            </button>
+          </div>
+
+          {/* Stats Section */}
+          {filter === "stats" && (
+            <div className="mt-6 grid grid-cols-2 gap-4">
+              {stats.map((stat) => (
+                <div
+                  key={stat.id}
+                  className="rounded-lg border border-[#D4D0CC] bg-white p-4"
+                >
                   <div className="space-y-2">
                     <p className="text-3xl">{stat.icon}</p>
                     <div>
-                      <p className="text-xs text-dark-gray">{stat.label}</p>
-                      <p className="text-2xl font-bold text-ink mt-1">{stat.value}</p>
-                      <p className="text-xs text-dark-gray mt-2">{stat.trend}</p>
+                      <p className="text-xs text-[#8B8680]">{stat.label}</p>
+                      <p className="text-2xl font-bold text-[#001524] mt-1">
+                        {stat.value}
+                      </p>
+                      <p className="text-xs text-[#8B8680] mt-2">{stat.trend}</p>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
+                </div>
+              ))}
+            </div>
+          )}
 
-        {/* Badges Section */}
-        {filter === "badges" && (
-          <div className="space-y-4">
-            {/* Earned Badges */}
-            {badges.filter((b) => b.earned).length > 0 && (
-              <div>
-                <h3 className="text-sm font-semibold text-ink mb-3">Earned</h3>
-                <div className="space-y-2">
-                  {badges
-                    .filter((b) => b.earned)
-                    .map((badge) => (
-                      <Card key={badge.id}>
-                        <CardContent className="pt-6">
+          {/* Badges Section */}
+          {filter === "badges" && (
+            <div className="mt-6 space-y-6">
+              {/* Earned Badges */}
+              {badges.filter((b) => b.earned).length > 0 && (
+                <div>
+                  <h3 className="text-sm font-black uppercase tracking-[0.08em] text-[#001524] mb-3">
+                    Earned
+                  </h3>
+                  <div className="space-y-3">
+                    {badges
+                      .filter((b) => b.earned)
+                      .map((badge) => (
+                        <div
+                          key={badge.id}
+                          className="rounded-lg border border-[#D4D0CC] bg-white p-4"
+                        >
                           <div className="flex items-start gap-3">
                             <span className="text-2xl">🏆</span>
                             <div>
-                              <p className="font-semibold text-ink">{badge.name}</p>
-                              <p className="text-sm text-dark-gray">{badge.description}</p>
+                              <p className="font-semibold text-[#001524]">
+                                {badge.name}
+                              </p>
+                              <p className="text-sm text-[#8B8680]">
+                                {badge.description}
+                              </p>
                             </div>
                           </div>
-                        </CardContent>
-                      </Card>
-                    ))}
+                        </div>
+                      ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* In Progress Badges */}
-            {badges.filter((b) => !b.earned).length > 0 && (
-              <div>
-                <h3 className="text-sm font-semibold text-ink mb-3">In Progress</h3>
-                <div className="space-y-2">
-                  {badges
-                    .filter((b) => !b.earned)
-                    .map((badge) => (
-                      <Card key={badge.id}>
-                        <CardContent className="pt-6">
+              {/* In Progress Badges */}
+              {badges.filter((b) => !b.earned).length > 0 && (
+                <div>
+                  <h3 className="text-sm font-black uppercase tracking-[0.08em] text-[#001524] mb-3">
+                    In Progress
+                  </h3>
+                  <div className="space-y-3">
+                    {badges
+                      .filter((b) => !b.earned)
+                      .map((badge) => (
+                        <div
+                          key={badge.id}
+                          className="rounded-lg border border-[#D4D0CC] bg-white p-4"
+                        >
                           <div className="flex items-start gap-3">
                             <span className="text-2xl opacity-50">🔒</span>
                             <div className="flex-1">
-                              <p className="font-semibold text-ink">{badge.name}</p>
-                              <p className="text-sm text-dark-gray">{badge.description}</p>
+                              <p className="font-semibold text-[#001524]">
+                                {badge.name}
+                              </p>
+                              <p className="text-sm text-[#8B8680]">
+                                {badge.description}
+                              </p>
                               <div className="mt-3">
-                                <div className="flex-1 bg-medium-gray rounded-full h-2">
+                                <div className="h-2 bg-[#F3F4F6] rounded-full overflow-hidden">
                                   <div
-                                    className="bg-orange h-2 rounded-full"
+                                    className="h-full bg-[#ff7d00] rounded-full transition-all"
                                     style={{ width: `${badge.progress}%` }}
                                   />
                                 </div>
-                                <p className="text-xs text-dark-gray mt-1">
+                                <p className="text-xs text-[#8B8680] mt-1">
                                   {badge.progress}% Complete
                                 </p>
                               </div>
                             </div>
                           </div>
-                        </CardContent>
-                      </Card>
-                    ))}
+                        </div>
+                      ))}
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
-        )}
+              )}
+            </div>
+          )}
+        </div>
       </div>
-    </Page>
+    </main>
   );
 }

@@ -1,8 +1,5 @@
 "use client";
 
-import { Page } from "@/components/layout/Page";
-import { Button } from "@/components/ui/Button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { useState } from "react";
 import { Upload } from "lucide-react";
 
@@ -16,9 +13,9 @@ export default function AddDrinkPage() {
   });
 
   const sessions = [
-    { id: 1, name: "Friday Night Alpha" },
-    { id: 2, name: "Vegas Vibes 2" },
-    { id: 3, name: "Weekend Kickoff" },
+    { id: "1", name: "Friday Night Alpha" },
+    { id: "2", name: "Post Golf Boys" },
+    { id: "3", name: "Brewery Crawl" },
   ];
 
   const sizes = ["12oz", "16oz", "20oz", "Pint (16oz)", "Other"];
@@ -38,121 +35,131 @@ export default function AddDrinkPage() {
   };
 
   return (
-    <Page title="Log a Drink">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Photo Upload */}
-        <Card>
-          <CardContent className="pt-6">
-            <div className="border-2 border-dashed border-medium-gray rounded-lg p-8 text-center cursor-pointer hover:border-orange transition-colors">
-              <Upload className="w-8 h-8 text-dark-gray mx-auto mb-2" />
-              <p className="text-sm font-medium text-ink">Add Photo</p>
-              <p className="text-xs text-dark-gray mt-1">Optional</p>
-              <input type="file" accept="image/*" className="hidden" id="photo-upload" />
+    <main className="min-h-screen bg-[#FAFAF8] text-[#001524]">
+      <div className="mx-auto w-full max-w-md pb-36">
+        <div className="px-4">
+          <div className="pt-4 pb-3">
+            <h1 className="text-[32px] font-black italic tracking-tight text-[#001524]">
+              Log a Drink
+            </h1>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Photo Upload */}
+            <div className="rounded-lg border border-[#D4D0CC] bg-white p-6">
+              <label htmlFor="photo-upload" className="block cursor-pointer">
+                <div className="border-2 border-dashed border-[#D4D0CC] rounded-lg p-8 text-center hover:border-[#15616d] transition-colors">
+                  <Upload className="h-8 w-8 text-[#8B8680] mx-auto mb-2" />
+                  <p className="text-sm font-medium text-[#001524]">
+                    Add Photo
+                  </p>
+                  <p className="text-xs text-[#8B8680] mt-1">Optional</p>
+                </div>
+                <input
+                  type="file"
+                  id="photo-upload"
+                  accept="image/*"
+                  className="hidden"
+                />
+              </label>
             </div>
-          </CardContent>
-        </Card>
 
-        {/* Beer Name */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Beer Name</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <input
-              type="text"
-              name="beerName"
-              value={formData.beerName}
-              onChange={handleInputChange}
-              placeholder="Enter beer name"
-              className="w-full px-3 py-2 border border-medium-gray rounded-lg focus:outline-none focus:border-orange focus:ring-2 focus:ring-orange/20"
-              required
-            />
-          </CardContent>
-        </Card>
+            {/* Beer Name */}
+            <div className="rounded-lg border border-[#D4D0CC] bg-white p-4">
+              <label className="block text-sm font-semibold text-[#001524] mb-2">
+                Beer Name
+              </label>
+              <input
+                type="text"
+                name="beerName"
+                value={formData.beerName}
+                onChange={handleInputChange}
+                placeholder="Enter beer name"
+                className="w-full rounded-lg border border-[#D4D0CC] bg-white px-4 py-3 text-sm placeholder:text-[#8B8680] focus:border-[#15616d] focus:outline-none focus:ring-2 focus:ring-[#15616d]/10"
+                required
+              />
+            </div>
 
-        {/* Size Selector */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Size</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <select
-              name="size"
-              value={formData.size}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-medium-gray rounded-lg focus:outline-none focus:border-orange focus:ring-2 focus:ring-orange/20"
+            {/* Size Selector */}
+            <div className="rounded-lg border border-[#D4D0CC] bg-white p-4">
+              <label className="block text-sm font-semibold text-[#001524] mb-2">
+                Size
+              </label>
+              <select
+                name="size"
+                value={formData.size}
+                onChange={handleInputChange}
+                className="w-full rounded-lg border border-[#D4D0CC] bg-white px-4 py-3 text-sm focus:border-[#15616d] focus:outline-none focus:ring-2 focus:ring-[#15616d]/10"
+              >
+                {sizes.map((size) => (
+                  <option key={size} value={size}>
+                    {size}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Session Selector */}
+            <div className="rounded-lg border border-[#D4D0CC] bg-white p-4">
+              <label className="block text-sm font-semibold text-[#001524] mb-2">
+                Tab
+              </label>
+              <select
+                name="session"
+                value={formData.session}
+                onChange={handleInputChange}
+                className="w-full rounded-lg border border-[#D4D0CC] bg-white px-4 py-3 text-sm focus:border-[#15616d] focus:outline-none focus:ring-2 focus:ring-[#15616d]/10"
+                required
+              >
+                <option value="">Select a tab</option>
+                {sessions.map((session) => (
+                  <option key={session.id} value={session.id}>
+                    {session.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Location */}
+            <div className="rounded-lg border border-[#D4D0CC] bg-white p-4">
+              <label className="block text-sm font-semibold text-[#001524] mb-2">
+                Location
+              </label>
+              <input
+                type="text"
+                name="location"
+                value={formData.location}
+                onChange={handleInputChange}
+                placeholder="Where did you log this?"
+                className="w-full rounded-lg border border-[#D4D0CC] bg-white px-4 py-3 text-sm placeholder:text-[#8B8680] focus:border-[#15616d] focus:outline-none focus:ring-2 focus:ring-[#15616d]/10"
+              />
+            </div>
+
+            {/* Notes */}
+            <div className="rounded-lg border border-[#D4D0CC] bg-white p-4">
+              <label className="block text-sm font-semibold text-[#001524] mb-2">
+                Notes
+              </label>
+              <textarea
+                name="caption"
+                value={formData.caption}
+                onChange={handleInputChange}
+                placeholder="Add notes about this drink..."
+                rows={3}
+                className="w-full rounded-lg border border-[#D4D0CC] bg-white px-4 py-3 text-sm placeholder:text-[#8B8680] focus:border-[#15616d] focus:outline-none focus:ring-2 focus:ring-[#15616d]/10 resize-none"
+              />
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              className="w-full rounded-lg bg-[#ff7d00] px-4 py-3 text-center text-sm font-semibold text-white hover:bg-[#e66f00] transition-colors"
             >
-              {sizes.map((size) => (
-                <option key={size} value={size}>
-                  {size}
-                </option>
-              ))}
-            </select>
-          </CardContent>
-        </Card>
-
-        {/* Session Selector */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Tab</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <select
-              name="session"
-              value={formData.session}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-medium-gray rounded-lg focus:outline-none focus:border-orange focus:ring-2 focus:ring-orange/20"
-              required
-            >
-              <option value="">Select a tab</option>
-              {sessions.map((session) => (
-                <option key={session.id} value={session.id}>
-                  {session.name}
-                </option>
-              ))}
-            </select>
-          </CardContent>
-        </Card>
-
-        {/* Location */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Location</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <input
-              type="text"
-              name="location"
-              value={formData.location}
-              onChange={handleInputChange}
-              placeholder="Where did you log this?"
-              className="w-full px-3 py-2 border border-medium-gray rounded-lg focus:outline-none focus:border-orange focus:ring-2 focus:ring-orange/20"
-            />
-          </CardContent>
-        </Card>
-
-        {/* Caption */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Notes</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <textarea
-              name="caption"
-              value={formData.caption}
-              onChange={handleInputChange}
-              placeholder="Add notes about this drink..."
-              rows={3}
-              className="w-full px-3 py-2 border border-medium-gray rounded-lg focus:outline-none focus:border-orange focus:ring-2 focus:ring-orange/20 resize-none"
-            />
-          </CardContent>
-        </Card>
-
-        {/* Submit Button */}
-        <Button className="w-full text-base py-3" type="submit">
-          Log Drink
-        </Button>
-      </form>
-    </Page>
+              Log Drink
+            </button>
+          </form>
+        </div>
+      </div>
+    </main>
   );
 }
