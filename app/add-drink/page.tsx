@@ -873,7 +873,7 @@ function CurrentTabHero({ activeTab }: { activeTab: ActiveTab }) {
         ) : (
           <div className={`absolute inset-0 bg-gradient-to-br ${gradients.alpha}`} />
         )}
-        <div className="absolute inset-0 bg-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-teal/70 via-teal/20 to-transparent" />
         <div className="absolute left-4 top-4">
           <StatusBadge label="Live" variant="live" icon={null} />
         </div>
