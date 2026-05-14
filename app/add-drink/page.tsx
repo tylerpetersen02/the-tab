@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 import {
   ArrowLeft,
   Beer,
@@ -141,6 +141,12 @@ export default function AddDrinkPage() {
   const [cocktailBase, setCocktailBase] = useState("Margarita");
   const [drinkLocation, setDrinkLocation] = useState("Finney's Crafthouse");
   const [caption, setCaption] = useState("");
+
+  useEffect(() => {
+    if (screen === "add_drink") {
+      setSelectedOunces(16);
+    }
+  }, [screen]);
 
   const goalPercent = useMemo(() => {
     if (!activeTab?.ounceGoal) return 0;
@@ -637,7 +643,7 @@ export default function AddDrinkPage() {
         </PageSection>
 
         {showCloseConfirm && (
-          <div className="fixed inset-0 bg-black/20 z-50 flex items-end">
+          <div className="fixed inset-0 bg-black/20 z-[60] flex items-end">
             <div className="w-full bg-white rounded-t-[28px] p-6 space-y-4">
               <div>
                 <AppText as="h2" variant="cardTitle">
@@ -1101,19 +1107,35 @@ function OunceWheel({
   onChange: (value: number) => void;
 }) {
   const ounceOptions = [4, 5, 6, 8, 10, 12, 16, 19, 20, 22, 24, 32];
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  useEffect(() => {
+    const index = ounceOptions.indexOf(value);
+    if (index !== -1 && buttonRefs.current[index]) {
+      buttonRefs.current[index]?.scrollIntoView({
+        behavior: "auto",
+        block: "nearest",
+        inline: "center",
+      });
+    }
+  }, [value, ounceOptions]);
 
   return (
     <div className="relative -mx-4 overflow-hidden">
       <div className="pointer-events-none absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-off-white to-transparent z-10" />
       <div className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-off-white to-transparent z-10" />
 
-      <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 py-2 scrollbar-hide">
-        {ounceOptions.map((oz) => {
+      <div ref={scrollContainerRef} className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 py-2 scrollbar-hide">
+        {ounceOptions.map((oz, index) => {
           const active = value === oz;
 
           return (
             <button
               key={oz}
+              ref={(el) => {
+                buttonRefs.current[index] = el;
+              }}
               onClick={() => onChange(oz)}
               className={[
                 "snap-center shrink-0 rounded-full border px-5 py-3 transition-all",
