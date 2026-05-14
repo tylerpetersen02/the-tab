@@ -1054,7 +1054,7 @@ function OunceWheel({
   value: number;
   onChange: (value: number) => void;
 }) {
-  const ounceOptions = [8, 10, 12, 16, 19, 20, 22, 24, 32];
+  const ounceOptions = [4, 5, 6, 8, 10, 12, 16, 19, 20, 22, 24, 32];
 
   return (
     <div className="relative -mx-4 overflow-hidden">
