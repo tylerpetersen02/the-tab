@@ -7,8 +7,8 @@
   --color-white: #FFFFFF;
   --color-off-white: #FAFAF8;
   --color-light-gray: #F3F4F6;
-  --color-medium-gray: #D1D5DB;
-  --color-dark-gray: #6B7280;
+  --color-medium-gray: #D4D0CC;
+  --color-dark-gray: #8B8680;
   --color-black: #0A0A0A;
   --color-ink: #001524;
   --color-teal: #15616d;
@@ -34,6 +34,8 @@ body {
   background: #FAFAF8;
   color: #001524;
   font-family: "Nunito Sans", system-ui, sans-serif;
+  letter-spacing: -0.01em;
+  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -56,27 +58,6 @@ body {
 
 html {
   scroll-behavior: smooth;
-}
-
-input,
-textarea,
-select {
-  font: inherit;
-  color: inherit;
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #e5e5e5;
-  border-radius: 8px;
-  -webkit-appearance: none;
-  appearance: none;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  outline: none;
-  border-color: #0ea5e9;
-  box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.1);
 }
 
 button:disabled {

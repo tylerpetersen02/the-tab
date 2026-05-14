@@ -1,4 +1,5 @@
 import { Flame } from "lucide-react";
+import { SectionHeader } from "@/components/common/SectionHeader";
 import { LiveSessionBubble } from "./LiveSessionBubble";
 
 interface LiveSession {
@@ -23,15 +24,15 @@ export function LiveSessionCarousel({
   }
 
   return (
-    <section className="mt-5 px-5">
-      <div className="mb-3 flex items-center gap-2">
-        <h2 className="text-[13px] font-black uppercase tracking-[0.08em] text-[#001524]">
-          Live Now
-        </h2>
-        <Flame className="h-4 w-4 fill-current text-[#ff7d00]" />
+    <div>
+      <div className="mb-3">
+        <SectionHeader
+          title="Live Now"
+          icon={<Flame className="h-4 w-4 fill-orange text-orange" />}
+        />
       </div>
 
-      <div className="-mx-5 flex gap-4 overflow-x-auto px-5 pb-2 scrollbar-hide">
+      <div className="-mx-4 flex gap-4 overflow-x-auto px-4 pb-2 scrollbar-hide">
         {sessions.map((session) => (
           <LiveSessionBubble
             key={session.id}
@@ -40,6 +41,6 @@ export function LiveSessionCarousel({
           />
         ))}
       </div>
-    </section>
+    </div>
   );
 }

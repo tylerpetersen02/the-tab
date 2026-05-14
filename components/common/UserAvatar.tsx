@@ -10,10 +10,10 @@ export function UserAvatar({ initials, size = "md" }: UserAvatarProps) {
       : "h-10 w-10 text-sm";
 
   const colors = [
-    "bg-[#15616d]",
-    "bg-[#ff7d00]",
-    "bg-[#001524]",
-    "bg-[#6FAFA5]",
+    "bg-teal",
+    "bg-orange",
+    "bg-ink",
+    "bg-brandy",
   ];
 
   const colorIndex = initials.charCodeAt(0) % colors.length;

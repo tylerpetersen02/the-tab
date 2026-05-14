@@ -1,3 +1,9 @@
+import { shadows } from "@/lib/shadows";
+import { CardShell } from "@/components/common/CardShell";
+import { AppText } from "@/components/common/AppText";
+import { AppButton } from "@/components/common/AppButton";
+import { gradients } from "@/lib/gradients";
+
 interface RecapFeedPostProps {
   id: string;
   sessionTitle: string;
@@ -16,29 +22,31 @@ export function RecapFeedPost({
   onViewReceipts,
 }: RecapFeedPostProps) {
   return (
-    <article className="overflow-hidden rounded-[28px] border border-[#D4D0CC] bg-white shadow-[0_8px_26px_rgba(0,21,36,0.07)]">
-      <div className="h-32 bg-gradient-to-br from-[#15616d] to-[#ff7d00]" />
+    <div className={`overflow-hidden rounded-[28px] border border-medium-gray bg-white ${shadows.card}`}>
+      <div className={`h-32 bg-gradient-to-br ${gradients.warm}`} />
 
       <div className="p-4">
-        <p className="text-xs font-black uppercase tracking-wide text-[#ff7d00]">
+        <AppText variant="tinyLabel" className="text-orange">
           Recap Ready
-        </p>
+        </AppText>
 
-        <h3 className="mt-1 text-xl font-black text-[#001524]">
+        <AppText as="h3" variant="cardTitle" className="mt-1">
           {sessionTitle}
-        </h3>
+        </AppText>
 
-        <p className="mt-1 text-sm font-semibold text-[#8B8680]">
+        <AppText variant="meta" className="mt-1">
           {beersLogged} beers · {pintScore} Pint Score · {mediaCount} media
-        </p>
+        </AppText>
 
-        <button
+        <AppButton
+          variant="primary"
+          size="sm"
           onClick={onViewReceipts}
-          className="mt-4 rounded-full bg-[#001524] px-4 py-2 text-sm font-black text-white hover:bg-[#1a1f28] transition-colors"
+          className="mt-4"
         >
           View Receipts
-        </button>
+        </AppButton>
       </div>
-    </article>
+    </div>
   );
 }

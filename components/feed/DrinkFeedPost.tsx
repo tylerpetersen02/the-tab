@@ -1,4 +1,7 @@
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, Trophy } from "lucide-react";
+import { CardShell } from "@/components/common/CardShell";
+import { AppText } from "@/components/common/AppText";
+import { AppButton } from "@/components/common/AppButton";
 import { UserAvatar } from "@/components/common/UserAvatar";
 import { SessionChip } from "@/components/common/SessionChip";
 import { InfoPill } from "@/components/common/InfoPill";
@@ -49,22 +52,22 @@ export function DrinkFeedPost({
   badge,
 }: DrinkFeedPostProps) {
   return (
-    <article className="rounded-[28px] border border-[#D4D0CC] bg-white p-4 shadow-[0_10px_30px_rgba(0,21,36,0.08)]">
+    <CardShell variant="feed" className="p-4">
       {/* Header */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
           <UserAvatar initials={user.initials} />
           <div>
-            <p className="text-sm font-extrabold text-[#001524]">{user.name}</p>
-            <p className="text-[11px] font-semibold text-[#8B8680]">
+            <AppText variant="cardTitle">{user.name}</AppText>
+            <AppText variant="meta" className="mt-1">
               {createdAtLabel}
-            </p>
+            </AppText>
           </div>
         </div>
 
-        <button className="text-[#8B8680] hover:text-[#001524] transition-colors">
+        <AppButton variant="ghost" size="icon">
           <MoreHorizontal className="h-5 w-5" />
-        </button>
+        </AppButton>
       </div>
 
       {/* Session chip */}
@@ -74,11 +77,13 @@ export function DrinkFeedPost({
 
       {/* Drink title */}
       <div className="mt-4">
-        <h3 className="text-[22px] font-black leading-tight text-[#001524]">
+        <AppText as="h3" variant="cardTitle" className="text-[22px]">
           Beer #{drinkNumber}
-        </h3>
+        </AppText>
 
-        <p className="mt-1 text-xs font-semibold text-[#8B8680]">{location}</p>
+        <AppText variant="meta" className="mt-1">
+          {location}
+        </AppText>
 
         <div className="mt-3 flex flex-wrap gap-2">
           <InfoPill label={`${drinkSizeOz} oz`} />
@@ -88,7 +93,7 @@ export function DrinkFeedPost({
       </div>
 
       {/* Media */}
-      <div className="mt-5 overflow-hidden rounded-[26px] bg-[#E8DCC8] shadow-inner">
+      <div className="mt-5 overflow-hidden rounded-[26px]">
         <div
           className={`aspect-[4/3] bg-gradient-to-br ${mediaGradient}`}
         />
@@ -96,9 +101,9 @@ export function DrinkFeedPost({
 
       {/* Caption */}
       {caption && (
-        <p className="mt-4 text-sm font-semibold leading-relaxed text-[#001524]">
+        <AppText variant="body" className="mt-4">
           {caption}
-        </p>
+        </AppText>
       )}
 
       {/* Reactions */}
@@ -108,23 +113,23 @@ export function DrinkFeedPost({
 
       {/* Badge/Award */}
       {badge && (
-        <div className="mt-4 rounded-[24px] border border-[#F2C14E]/60 bg-[#FFF4D6] p-4">
+        <div className="mt-4 rounded-[24px] border border-orange/20 bg-orange/5 p-4">
           <div className="flex items-start gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-sm text-lg">
-              🏆
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-sm">
+              <Trophy className="h-5 w-5 text-brandy" />
             </div>
 
             <div>
-              <p className="text-[11px] font-black uppercase tracking-wide text-[#78290f]">
+              <AppText variant="tinyLabel">
                 {badge.title}
-              </p>
-              <p className="mt-1 text-xs font-semibold text-[#001524]">
+              </AppText>
+              <AppText variant="body" className="mt-1">
                 {badge.description}
-              </p>
+              </AppText>
             </div>
           </div>
         </div>
       )}
-    </article>
+    </CardShell>
   );
 }

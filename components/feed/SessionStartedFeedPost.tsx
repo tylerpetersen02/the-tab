@@ -1,3 +1,7 @@
+import { CardShell } from "@/components/common/CardShell";
+import { AppText } from "@/components/common/AppText";
+import { AppButton } from "@/components/common/AppButton";
+
 interface SessionStartedFeedPostProps {
   id: string;
   user: string;
@@ -12,24 +16,26 @@ export function SessionStartedFeedPost({
   onJoin,
 }: SessionStartedFeedPostProps) {
   return (
-    <article className="rounded-[24px] border border-[#D4D0CC] bg-white p-4 shadow-[0_6px_20px_rgba(0,21,36,0.06)]">
+    <CardShell variant="compact" className="p-4">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <p className="text-sm font-black text-[#001524]">
+          <AppText variant="cardTitle">
             {user} started a tab
-          </p>
-          <p className="mt-1 text-sm font-semibold text-[#8B8680]">
+          </AppText>
+          <AppText variant="meta" className="mt-1">
             {session} · Live now
-          </p>
+          </AppText>
         </div>
 
-        <button
+        <AppButton
+          variant="primary"
+          size="sm"
           onClick={onJoin}
-          className="rounded-full bg-[#ff7d00] px-4 py-2 text-sm font-black text-white hover:bg-[#e67300] transition-colors shrink-0"
+          className="shrink-0"
         >
           Join
-        </button>
+        </AppButton>
       </div>
-    </article>
+    </CardShell>
   );
 }

@@ -2,29 +2,30 @@
 
 import { AppPage } from "@/components/common/AppPage";
 import { AppHeader } from "@/components/common/AppHeader";
-import { FeedToggle } from "@/components/feed/FeedToggle";
+import { PageSection } from "@/components/common/PageSection";
 import { LiveSessionCarousel } from "@/components/feed/LiveSessionCarousel";
 import { FeedPostList, type FeedPost } from "@/components/feed/FeedPostList";
+import { gradients } from "@/lib/gradients";
 
 const liveSessions = [
   {
     id: "session-1",
     title: "Friday Night Alpha",
-    gradient: "from-[#001524] via-[#15616d] to-[#ff7d00]",
+    gradient: gradients.alpha,
     isLive: true,
     memberCount: 6,
   },
   {
     id: "session-2",
     title: "Post Golf Boys",
-    gradient: "from-[#15616d] via-[#6FAFA5] to-[#F2C14E]",
+    gradient: gradients.golfBoys,
     isLive: true,
     memberCount: 4,
   },
   {
     id: "session-3",
     title: "Brewery Crawl",
-    gradient: "from-[#9bc8e8] via-[#6FAFA5] to-[#ffecd1]",
+    gradient: gradients.breweryCrawl,
     isLive: true,
     memberCount: 5,
   },
@@ -46,7 +47,7 @@ const feedPosts: FeedPost[] = [
     caption: "Post-round beer hit different 🍻",
     likes: 12,
     comments: 5,
-    mediaGradient: "from-[#15616d] via-[#9bc8e8] to-[#f4a261]",
+    mediaGradient: gradients.dustyBlue,
     badge: {
       title: "Personal Record",
       description: "Most beers in a single session",
@@ -83,7 +84,7 @@ const feedPosts: FeedPost[] = [
     caption: "18 holes and cold ones 🏌️",
     likes: 8,
     comments: 3,
-    mediaGradient: "from-[#001524] via-[#15616d] to-[#6FAFA5]",
+    mediaGradient: gradients.darkTeal,
   },
   {
     id: "post-5",
@@ -127,7 +128,7 @@ const feedPosts: FeedPost[] = [
     location: "The Golf House · Torrey Pines, CA",
     likes: 6,
     comments: 2,
-    mediaGradient: "from-[#15616d] via-[#f4a261] to-[#ffecd1]",
+    mediaGradient: gradients.warm,
   },
 ];
 
@@ -145,12 +146,15 @@ export default function FeedPage() {
   return (
     <AppPage>
       <AppHeader title="The Tab" />
-      <FeedToggle />
-      <LiveSessionCarousel
-        sessions={liveSessions}
-        onSessionClick={handleSessionClick}
-      />
-      <FeedPostList posts={feedPosts} onPostAction={handlePostAction} />
+      <PageSection>
+        <LiveSessionCarousel
+          sessions={liveSessions}
+          onSessionClick={handleSessionClick}
+        />
+      </PageSection>
+      <PageSection>
+        <FeedPostList posts={feedPosts} onPostAction={handlePostAction} />
+      </PageSection>
     </AppPage>
   );
 }

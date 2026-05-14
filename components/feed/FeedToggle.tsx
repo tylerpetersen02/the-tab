@@ -1,38 +1,43 @@
 "use client";
 
 import { useState } from "react";
+import { AppText } from "@/components/common/AppText";
 
 export function FeedToggle() {
   const [active, setActive] = useState<"feed" | "following">("feed");
 
   return (
-    <div className="px-5">
-      <div className="flex border-b border-[#D4D0CC]">
+    <div>
+      <div className="flex border-b border-medium-gray">
         <button
           onClick={() => setActive("feed")}
-          className={`relative px-1 pb-3 text-sm font-black transition-colors ${
+          className={`relative px-1 pb-3 transition-colors ${
             active === "feed"
-              ? "text-[#001524]"
-              : "text-[#8B8680] hover:text-[#001524]"
+              ? "text-ink"
+              : "text-dark-gray hover:text-ink"
           }`}
         >
-          FEED
+          <AppText as="span" variant="tinyLabel">
+            Feed
+          </AppText>
           {active === "feed" && (
-            <span className="absolute bottom-0 left-0 h-[3px] w-full rounded-full bg-[#001524]" />
+            <span className="absolute bottom-0 left-0 h-[3px] w-full rounded-full bg-ink" />
           )}
         </button>
 
         <button
           onClick={() => setActive("following")}
-          className={`ml-8 px-1 pb-3 text-sm font-black transition-colors ${
+          className={`ml-8 px-1 pb-3 transition-colors ${
             active === "following"
-              ? "text-[#001524]"
-              : "text-[#8B8680] hover:text-[#001524]"
+              ? "text-ink"
+              : "text-dark-gray hover:text-ink"
           }`}
         >
-          FOLLOWING
+          <AppText as="span" variant="tinyLabel">
+            Following
+          </AppText>
           {active === "following" && (
-            <span className="absolute bottom-0 left-0 h-[3px] w-full rounded-full bg-[#001524]" />
+            <span className="absolute bottom-0 left-0 h-[3px] w-full rounded-full bg-ink" />
           )}
         </button>
       </div>

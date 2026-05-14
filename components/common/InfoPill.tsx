@@ -5,9 +5,9 @@ interface InfoPillProps {
 
 export function InfoPill({ label, tone = "default" }: InfoPillProps) {
   const styles = {
-    default: "bg-[#FAFAF8] border border-[#D4D0CC] text-[#001524]",
-    teal: "bg-[#dff4f2] border border-[#a8d5e0] text-[#15616d]",
-    orange: "bg-[#fff0e6] border border-[#ffc9a3] text-[#ff7d00]",
+    default: "bg-off-white border border-medium-gray text-ink",
+    teal: "bg-teal/10 border border-teal/20 text-teal",
+    orange: "bg-orange/10 border border-orange/20 text-orange",
   };
 
   return (

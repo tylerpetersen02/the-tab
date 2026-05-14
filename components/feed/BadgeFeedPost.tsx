@@ -1,4 +1,7 @@
 import { Trophy } from "lucide-react";
+import { shadows } from "@/lib/shadows";
+import { CardShell } from "@/components/common/CardShell";
+import { AppText } from "@/components/common/AppText";
 
 interface BadgeFeedPostProps {
   id: string;
@@ -15,27 +18,27 @@ export function BadgeFeedPost({
   description,
   user,
   session,
-  icon = <Trophy className="h-6 w-6 text-[#ff7d00]" />,
+  icon = <Trophy className="h-6 w-6 text-orange" />,
 }: BadgeFeedPostProps) {
   return (
-    <article className="rounded-[28px] border border-[#F2C14E]/60 bg-[#FFF4D6] p-4 shadow-[0_8px_24px_rgba(0,21,36,0.06)]">
+    <div className={`rounded-[28px] border border-orange/20 bg-orange/5 p-4 ${shadows.card}`}>
       <div className="flex items-start gap-3">
         <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm">
           {icon}
         </div>
 
         <div>
-          <p className="text-xs font-black uppercase tracking-wide text-[#78290f]">
+          <AppText variant="tinyLabel">
             {title}
-          </p>
-          <h3 className="mt-1 text-lg font-black text-[#001524]">
+          </AppText>
+          <AppText as="h3" variant="cardTitle" className="mt-1">
             {description}
-          </h3>
-          <p className="mt-1 text-sm font-semibold text-[#8B8680]">
+          </AppText>
+          <AppText variant="meta" className="mt-1">
             {user} unlocked this in {session}.
-          </p>
+          </AppText>
         </div>
       </div>
-    </article>
+    </div>
   );
 }

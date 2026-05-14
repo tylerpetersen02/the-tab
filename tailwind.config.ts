@@ -11,7 +11,7 @@ const config: Config = {
         white: "#FFFFFF",
         "off-white": "#FAFAF8",
         "light-gray": "#F3F4F6",
-        "medium-gray": "#D1D5DB",
+        "medium-gray": "#D4D0CC",
         "dark-gray": "#6B7280",
         black: "#0A0A0A",
         ink: "#001524",

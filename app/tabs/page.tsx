@@ -4,14 +4,12 @@ import { useState } from "react";
 import { Flame } from "lucide-react";
 import { AppPage } from "@/components/common/AppPage";
 import { AppHeader } from "@/components/common/AppHeader";
+import { PageSection } from "@/components/common/PageSection";
+import { FilterPills } from "@/components/common/FilterPills";
 import { SectionHeader } from "@/components/common/SectionHeader";
-import { TabsQuickActions } from "@/components/tabs/TabsQuickActions";
 import { TabsSearch } from "@/components/tabs/TabsSearch";
-import { TabsFilterPills } from "@/components/tabs/TabsFilterPills";
 import { TabListCard } from "@/components/tabs/TabListCard";
 import { TabsEmptyState } from "@/components/tabs/TabsEmptyState";
-import { CreateTabSheet } from "@/components/tabs/CreateTabSheet";
-import { JoinCodeSheet } from "@/components/tabs/JoinCodeSheet";
 
 type FilterType = "all" | "live" | "recent" | "mine" | "archived";
 
@@ -95,11 +93,17 @@ const mockTabs: Tab[] = [
   },
 ];
 
+const filterOptions = [
+  { label: "All", value: "all" },
+  { label: "Live", value: "live" },
+  { label: "Recent", value: "recent" },
+  { label: "Mine", value: "mine" },
+  { label: "Archived", value: "archived" },
+];
+
 export default function TabsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState<FilterType>("all");
-  const [isCreateSheetOpen, setIsCreateSheetOpen] = useState(false);
-  const [isJoinCodeSheetOpen, setIsJoinCodeSheetOpen] = useState(false);
 
   const filteredTabs = mockTabs.filter((tab) => {
     const matchesSearch = tab.title
@@ -118,46 +122,39 @@ export default function TabsPage() {
     // TODO: Navigate to tab detail page
   };
 
-  const handleJoinTab = (e: React.MouseEvent, tabId: string) => {
-    e.stopPropagation();
-    console.log("Join tab:", tabId);
-    // TODO: Handle join tab action
-  };
-
   return (
     <AppPage>
-      <AppHeader title="The Tab" subtitle="Manage your sessions." />
+      <AppHeader title="Tabs" subtitle="Manage your sessions." />
 
-      <div className="px-4">
-        <TabsQuickActions
-          onCreateTab={() => setIsCreateSheetOpen(true)}
-          onJoinCode={() => setIsJoinCodeSheetOpen(true)}
-        />
-
+      <PageSection>
         <TabsSearch value={searchQuery} onChange={setSearchQuery} />
+      </PageSection>
 
-        <TabsFilterPills
-          activeFilter={activeFilter}
-          onFilterChange={setActiveFilter}
+      <PageSection>
+        <FilterPills
+          options={filterOptions}
+          value={activeFilter}
+          onChange={(value) => setActiveFilter(value as FilterType)}
+          variant="secondary"
         />
-      </div>
+      </PageSection>
 
       {filteredTabs.length === 0 ? (
-        <div className="mt-8 px-4">
+        <PageSection>
           <TabsEmptyState
             title="No tabs found"
             description="Try adjusting your filters or search"
           />
-        </div>
+        </PageSection>
       ) : (
-        <div className="mt-6 px-4">
+        <>
           {liveTabs.length > 0 && (
-            <div>
+            <PageSection>
               <SectionHeader
                 title="Live Now"
-                icon={<Flame className="h-4 w-4 fill-current text-[#ff7d00]" />}
+                icon={<Flame className="h-4 w-4 fill-orange text-orange" />}
               />
-              <div className="mt-3">
+              <div className="mt-3 space-y-3">
                 {liveTabs.map((tab) => (
                   <TabListCard
                     key={tab.id}
@@ -169,17 +166,16 @@ export default function TabsPage() {
                     description={tab.description}
                     memberInitials={tab.memberInitials}
                     onClick={() => handleTabClick(tab.id)}
-                    onJoinClick={(e) => handleJoinTab(e, tab.id)}
                   />
                 ))}
               </div>
-            </div>
+            </PageSection>
           )}
 
           {recentTabs.length > 0 && (
-            <div className="mt-8">
+            <PageSection>
               <SectionHeader title="Recent Tabs" />
-              <div className="mt-3">
+              <div className="mt-3 space-y-2">
                 {recentTabs.map((tab) => (
                   <TabListCard
                     key={tab.id}
@@ -191,32 +187,13 @@ export default function TabsPage() {
                     description={tab.description}
                     memberInitials={tab.memberInitials}
                     onClick={() => handleTabClick(tab.id)}
-                    onJoinClick={(e) => handleJoinTab(e, tab.id)}
                   />
                 ))}
               </div>
-            </div>
+            </PageSection>
           )}
-        </div>
+        </>
       )}
-
-      <CreateTabSheet
-        isOpen={isCreateSheetOpen}
-        onClose={() => setIsCreateSheetOpen(false)}
-        onSubmit={(data) => {
-          console.log("Create tab:", data);
-          setIsCreateSheetOpen(false);
-        }}
-      />
-
-      <JoinCodeSheet
-        isOpen={isJoinCodeSheetOpen}
-        onClose={() => setIsJoinCodeSheetOpen(false)}
-        onSubmit={(code) => {
-          console.log("Join with code:", code);
-          setIsJoinCodeSheetOpen(false);
-        }}
-      />
     </AppPage>
   );
 }

@@ -61,7 +61,7 @@ interface FeedPostListProps {
 
 export function FeedPostList({ posts, onPostAction }: FeedPostListProps) {
   return (
-    <section className="mt-5 space-y-5 px-5 pb-8">
+    <section className="space-y-6 pb-8">
       {posts.map((post) => {
         switch (post.type) {
           case "drink":

@@ -17,28 +17,34 @@ export function BottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 bg-white border-t border-[#D4D0CC] flex items-center justify-around shadow-md"
+      className="fixed inset-x-0 bottom-0 z-50 pointer-events-none bg-white border-t border-[#D4D0CC] shadow-md"
       style={{
         height: "calc(64px + max(0px, env(safe-area-inset-bottom)))",
-        paddingBottom: "max(0px, env(safe-area-inset-bottom))",
       }}
     >
-      {tabs.map((tab) => {
-        const Icon = tab.icon;
-        const isActive = pathname === tab.href;
+      <div
+        className="mx-auto w-full max-w-md pointer-events-auto flex items-center justify-around h-full"
+        style={{
+          paddingBottom: "max(0px, env(safe-area-inset-bottom))",
+        }}
+      >
+        {tabs.map((tab) => {
+          const Icon = tab.icon;
+          const isActive = pathname === tab.href;
 
-        return (
-          <Link
-            key={tab.href}
-            href={tab.href}
-            className={`flex items-center justify-center flex-1 transition-colors ${
-              isActive ? "text-[#ff7d00]" : "text-[#6B7280]"
-            }`}
-          >
-            <Icon size={26} />
-          </Link>
-        );
-      })}
+          return (
+            <Link
+              key={tab.href}
+              href={tab.href}
+              className={`flex items-center justify-center flex-1 transition-colors ${
+                isActive ? "text-[#ff7d00]" : "text-[#6B7280]"
+              }`}
+            >
+              <Icon size={26} />
+            </Link>
+          );
+        })}
+      </div>
     </nav>
   );
 }

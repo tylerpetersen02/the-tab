@@ -3,6 +3,7 @@
 import { Users, Clock, Zap } from "lucide-react";
 import { AvatarStack } from "@/components/common/AvatarStack";
 import { StatusBadge } from "@/components/common/StatusBadge";
+import { AppText } from "@/components/common/AppText";
 
 interface TabListCardProps {
   id: string;
@@ -13,7 +14,6 @@ interface TabListCardProps {
   description?: string;
   memberInitials: string[];
   onClick: () => void;
-  onJoinClick: (e: React.MouseEvent) => void;
 }
 
 export function TabListCard({
@@ -25,49 +25,50 @@ export function TabListCard({
   description,
   memberInitials,
   onClick,
-  onJoinClick,
 }: TabListCardProps) {
   return (
     <div
       onClick={onClick}
-      className="mb-2 rounded-lg border border-[#D4D0CC] bg-white p-3 shadow-[0_6px_18px_rgba(0,21,36,0.05)] hover:bg-[#FAFAF8] transition-colors cursor-pointer"
+      className="rounded-[24px] border border-medium-gray bg-white p-3 shadow-[0_5px_18px_rgba(0,21,36,0.04)] hover:bg-off-white transition-colors cursor-pointer"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1">
           <div className="flex items-center gap-2">
-            <h3 className="text-sm font-extrabold text-[#001524]">{title}</h3>
+            <AppText as="h3" variant="cardTitle">
+              {title}
+            </AppText>
             {isLive && (
-              <StatusBadge label="Live" variant="live" icon={<Zap />} />
+              <StatusBadge label="Live" variant="live" icon={<Zap className="h-3 w-3" />} />
             )}
           </div>
 
           {description && (
-            <p className="mt-1 text-[11px] text-[#8B8680]">{description}</p>
+            <AppText variant="meta" className="mt-1">
+              {description}
+            </AppText>
           )}
 
-          <div className="mt-2 flex flex-wrap gap-3 text-[11px] text-[#8B8680]">
+          <div className="mt-2 flex flex-wrap gap-3">
             <div className="flex items-center gap-1">
-              <Users className="h-3 w-3" />
-              <span>{memberCount} members</span>
+              <Users className="h-3 w-3 text-dark-gray" />
+              <AppText as="span" variant="meta">
+                {memberCount} members
+              </AppText>
             </div>
             <div className="flex items-center gap-1">
-              <Clock className="h-3 w-3" />
-              <span>{createdTime}</span>
+              <Clock className="h-3 w-3 text-dark-gray" />
+              <AppText as="span" variant="meta">
+                {createdTime}
+              </AppText>
             </div>
           </div>
         </div>
 
-        <button
-          onClick={onJoinClick}
-          className="flex-shrink-0 rounded-lg bg-[#15616d]/12 px-3 py-2 text-xs font-bold text-[#15616d] hover:bg-[#15616d]/20 transition-colors"
-        >
-          Join
-        </button>
       </div>
 
       {memberInitials.length > 0 && (
-        <div className="mt-2">
-          <AvatarStack initials={memberInitials} maxDisplay={3} size="sm" />
+        <div className="mt-3 -mx-3 px-3">
+          <AvatarStack initials={memberInitials} maxDisplay={12} size="sm" fillWidth />
         </div>
       )}
     </div>

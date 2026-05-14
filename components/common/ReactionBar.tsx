@@ -1,4 +1,6 @@
 import { Heart, MessageCircle } from "lucide-react";
+import { AppButton } from "@/components/common/AppButton";
+import { AppText } from "@/components/common/AppText";
 
 interface ReactionBarProps {
   likes: number;
@@ -18,24 +20,28 @@ export function ReactionBar({
       <div className="flex items-center gap-5">
         <button
           onClick={onLike}
-          className="flex items-center gap-1.5 text-[#ff7d00] hover:opacity-80 transition-opacity"
+          className="flex items-center gap-1.5 text-orange hover:opacity-80 transition-opacity"
         >
-          <Heart className="h-5 w-5 fill-[#ff7d00]" />
-          <span className="text-sm font-black">{likes}</span>
+          <Heart className="h-5 w-5 fill-orange" />
+          <AppText as="span" variant="bodySmall" className="text-orange">
+            {likes}
+          </AppText>
         </button>
 
         <button
           onClick={onComment}
-          className="flex items-center gap-1.5 text-[#001524] hover:opacity-70 transition-opacity"
+          className="flex items-center gap-1.5 text-ink hover:opacity-70 transition-opacity"
         >
           <MessageCircle className="h-5 w-5" />
-          <span className="text-sm font-black">{comments}</span>
+          <AppText as="span" variant="bodySmall" className="text-ink">
+            {comments}
+          </AppText>
         </button>
       </div>
 
-      <button className="text-xs font-semibold text-[#8B8680] hover:text-[#001524] transition-colors">
+      <AppButton variant="ghost" size="sm">
         Share
-      </button>
+      </AppButton>
     </div>
   );
 }

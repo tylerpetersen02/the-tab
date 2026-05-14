@@ -1,5 +1,7 @@
 "use client";
 
+import { AppButton } from "@/components/common/AppButton";
+
 interface JoinCodeSheetProps {
   isOpen: boolean;
   onClose: () => void;
@@ -19,12 +21,15 @@ export function JoinCodeSheet({
       <div className="w-full bg-white rounded-t-2xl p-6">
         <h2 className="text-lg font-semibold text-[#001524]">Join with Code</h2>
         <p className="mt-1 text-sm text-[#8B8680]">Coming soon</p>
-        <button
+        <AppButton
+          variant="muted"
+          size="md"
+          fullWidth
           onClick={onClose}
-          className="mt-6 w-full rounded-lg bg-[#F3F4F6] py-3 text-sm font-semibold text-[#001524]"
+          className="mt-6"
         >
           Close
-        </button>
+        </AppButton>
       </div>
     </div>
   );

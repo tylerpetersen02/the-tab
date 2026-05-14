@@ -12,12 +12,12 @@ export function SessionChip({ title, isLive, onClick }: SessionChipProps) {
     <div className="flex items-center gap-2">
       <button
         onClick={onClick}
-        className="rounded-full bg-[#FAFAF8] px-3 py-1.5 text-xs font-bold text-[#001524] border border-[#D4D0CC] hover:bg-[#f0f0ed] transition-colors"
+        className="rounded-full bg-off-white px-3 py-2 text-xs font-bold text-ink border border-medium-gray hover:bg-light-gray transition-colors"
       >
         {title}
       </button>
 
-      {isLive && <StatusBadge label="Live" variant="live" icon={<Zap />} />}
+      {isLive && <StatusBadge label="Live" variant="live" icon={<Zap className="h-3 w-3" />} />}
     </div>
   );
 }

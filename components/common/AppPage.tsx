@@ -4,8 +4,8 @@ interface AppPageProps {
 
 export function AppPage({ children }: AppPageProps) {
   return (
-    <main className="min-h-screen bg-[#FAFAF8] text-[#001524]">
-      <div className="mx-auto w-full max-w-md pb-36">
+    <main className="min-h-dvh bg-off-white text-ink">
+      <div className="mx-auto w-full max-w-md pb-44">
         {children}
       </div>
     </main>
