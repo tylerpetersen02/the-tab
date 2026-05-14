@@ -125,6 +125,7 @@ const defaultMembers: Member[] = [
 export default function AddDrinkPage() {
   const [screen, setScreen] = useState<Screen>("gate");
   const [activeTab, setActiveTab] = useState<ActiveTab | null>(null);
+  const [showCloseConfirm, setShowCloseConfirm] = useState(false);
 
   const [tabTitle, setTabTitle] = useState("Friday Night Alpha");
   const [tabCoverPreview, setTabCoverPreview] = useState<string | null>(null);
@@ -623,11 +624,56 @@ export default function AddDrinkPage() {
         </PageSection>
 
         <PageSection className="border-t border-light-gray pt-4">
-          <AppButton variant="outline" size="md" fullWidth onClick={resetTab}>
-            <Clipboard className="h-4 w-4" />
+          <AppButton
+            variant="outline"
+            size="md"
+            fullWidth
+            onClick={() => setShowCloseConfirm(true)}
+            className="border-red-200 text-red-500 hover:bg-red-50"
+          >
+            <X className="h-4 w-4" />
             Close Tab
           </AppButton>
         </PageSection>
+
+        {showCloseConfirm && (
+          <div className="fixed inset-0 bg-black/20 z-50 flex items-end">
+            <div className="w-full bg-white rounded-t-[28px] p-6 space-y-4">
+              <div>
+                <AppText as="h2" variant="cardTitle">
+                  Close this tab?
+                </AppText>
+                <AppText variant="body" className="mt-3 text-dark-gray">
+                  This will end the current session and move it into tab history. Drinks, stats, and media will still be saved.
+                </AppText>
+              </div>
+
+              <div className="space-y-2 pt-4">
+                <AppButton
+                  size="lg"
+                  fullWidth
+                  onClick={() => {
+                    setActiveTab(null);
+                    setShowCloseConfirm(false);
+                    setScreen("gate");
+                  }}
+                  className="bg-red-500 hover:bg-red-600 text-white border-red-500"
+                >
+                  Close Tab
+                </AppButton>
+
+                <AppButton
+                  variant="outline"
+                  size="lg"
+                  fullWidth
+                  onClick={() => setShowCloseConfirm(false)}
+                >
+                  Cancel
+                </AppButton>
+              </div>
+            </div>
+          </div>
+        )}
       </AppPage>
     );
   }
@@ -1101,18 +1147,24 @@ function ActionTile({
   label,
   icon,
   onClick,
+  destructive,
 }: {
   label: string;
   icon: React.ReactNode;
   onClick?: () => void;
+  destructive?: boolean;
 }) {
   return (
     <button
       onClick={onClick}
-      className="flex min-h-[64px] flex-col items-center justify-center gap-1 rounded-[18px] border border-medium-gray bg-white p-2 transition-colors hover:bg-off-white"
+      className={`flex min-h-[64px] flex-col items-center justify-center gap-1 rounded-[18px] border p-2 transition-colors ${
+        destructive
+          ? "border-red-200 bg-white text-red-500 hover:bg-red-50"
+          : "border-medium-gray bg-white text-ink hover:bg-off-white"
+      }`}
     >
       {icon}
-      <AppText variant="tinyLabel" className="text-center">
+      <AppText variant="tinyLabel" className={`text-center ${destructive ? "text-red-500" : ""}`}>
         {label}
       </AppText>
     </button>
