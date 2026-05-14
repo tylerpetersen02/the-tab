@@ -37,7 +37,7 @@ export function BottomNav() {
               key={tab.href}
               href={tab.href}
               className={`flex items-center justify-center flex-1 transition-colors ${
-                isActive ? "text-[#ff7d00]" : "text-[#6B7280]"
+                isActive ? "text-[#ff7d00]" : "text-teal"
               }`}
             >
               <Icon size={26} />
