@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { BottomNav } from "@/components/layout/BottomNav";
 import { AuthClientShell } from "@/components/auth/AuthClientShell";
 import "./globals.css";
 
@@ -24,10 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full antialiased">
       <body className="w-full bg-off-white">
-        <AuthClientShell>
-          {children}
-          <BottomNav />
-        </AuthClientShell>
+        <AuthClientShell>{children}</AuthClientShell>
       </body>
     </html>
   );

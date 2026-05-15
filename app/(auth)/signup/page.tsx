@@ -3,14 +3,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { AppPage } from "@/components/common/AppPage";
-import { AppHeader } from "@/components/common/AppHeader";
-import { PageSection } from "@/components/common/PageSection";
-import { CardShell } from "@/components/common/CardShell";
-import { AppButton } from "@/components/common/AppButton";
 import { AppText } from "@/components/common/AppText";
+import { AppButton } from "@/components/common/AppButton";
 import { inputStyles } from "@/lib/inputStyles";
 import { useAuth } from "@/components/auth/useAuth";
+import { AuthLayout } from "@/components/auth/AuthLayout";
+import { AuthCard } from "@/components/auth/AuthCard";
+import { AuthMessage } from "@/components/auth/AuthMessage";
+import { AuthHero } from "@/components/auth/AuthHero";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -45,108 +45,131 @@ export default function SignupPage() {
       setError(result.error);
       setLoading(false);
     } else {
-      router.push("/");
+      router.push("/feed");
     }
   };
 
   return (
-    <AppPage>
-      <AppHeader title="Create Account" />
-      <PageSection>
-        <CardShell>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <AppText variant="label">Email</AppText>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
-                className={inputStyles}
-                required
-              />
-            </div>
+    <AuthLayout>
+      <div className="space-y-6">
+        <div className="text-center">
+          <AppText as="h1" variant="pageTitle" className="text-orange mb-2">
+            The Tab
+          </AppText>
+          <AppText variant="body" className="text-dark-gray">
+            Open your tab
+          </AppText>
+        </div>
 
-            <div className="space-y-2">
-              <AppText variant="label">Display Name</AppText>
-              <input
-                type="text"
-                value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
-                placeholder="Tyler Petersen"
-                className={inputStyles}
-                required
-              />
-            </div>
+        <AuthHero />
 
-            <div className="space-y-2">
-              <AppText variant="label">Username</AppText>
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="tylerpetersen"
-                className={inputStyles}
-                required
-              />
-            </div>
+        <AuthCard>
+          <div className="space-y-6">
+            <AuthMessage
+              title="Create account"
+              subtitle="Your name and username show on tabs and comments."
+            />
 
-            <div className="space-y-2">
-              <AppText variant="label">Password</AppText>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className={inputStyles}
-                required
-              />
-            </div>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <AppText variant="label">Display Name</AppText>
+                <input
+                  type="text"
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  placeholder="Tyler Petersen"
+                  className={inputStyles}
+                  required
+                />
+              </div>
 
-            {error && (
-              <div className="rounded-lg bg-red-50 p-3">
-                <AppText variant="caption" className="text-red-700">
-                  {error}
+              <div className="space-y-2">
+                <AppText variant="label">Username</AppText>
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="tylerpetersen"
+                  className={inputStyles}
+                  required
+                />
+                <AppText variant="meta" className="text-teal">
+                  @{username || "username"}
                 </AppText>
               </div>
-            )}
 
-            <div className="flex items-start space-x-3">
-              <input
-                type="checkbox"
-                id="terms"
-                checked={agreedToTerms}
-                onChange={(e) => setAgreedToTerms(e.target.checked)}
-                className="mt-1 rounded border-medium-gray"
-              />
-              <label htmlFor="terms" className="flex-1">
-                <AppText variant="caption" className="text-dark-gray">
-                  I agree to the Terms of Service and Privacy Policy
-                </AppText>
-              </label>
-            </div>
+              <div className="space-y-2">
+                <AppText variant="label">Email</AppText>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  className={inputStyles}
+                  required
+                />
+              </div>
 
-            <AppButton
-              onClick={handleSubmit}
-              disabled={loading}
-              className="w-full"
-            >
-              {loading ? "Creating account..." : "Create Account"}
-            </AppButton>
-          </form>
+              <div className="space-y-2">
+                <AppText variant="label">Password</AppText>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Minimum 8 characters"
+                  className={inputStyles}
+                  required
+                />
+              </div>
 
-          <div className="mt-6 border-t border-medium-gray pt-6">
-            <AppText variant="caption" className="text-center text-dark-gray">
-              Already have an account?
-            </AppText>
-            <Link href="/auth/login" className="mt-3 block">
-              <AppButton variant="secondary" className="w-full">
-                Log In
+              {error && (
+                <div className="rounded-lg bg-red-50 p-3">
+                  <AppText variant="caption" className="text-red-700">
+                    {error}
+                  </AppText>
+                </div>
+              )}
+
+              <div className="flex items-start space-x-3 pt-2">
+                <input
+                  type="checkbox"
+                  id="terms"
+                  checked={agreedToTerms}
+                  onChange={(e) => setAgreedToTerms(e.target.checked)}
+                  className="mt-1 rounded border-medium-gray"
+                />
+                <label htmlFor="terms" className="flex-1">
+                  <AppText variant="caption" className="text-dark-gray">
+                    I agree to the Terms of Service and Privacy Policy
+                  </AppText>
+                </label>
+              </div>
+
+              <AppButton
+                onClick={handleSubmit}
+                disabled={loading}
+                size="lg"
+                fullWidth
+              >
+                {loading ? "Creating account..." : "Create Account"}
               </AppButton>
-            </Link>
+            </form>
+
+            <div className="border-t border-light-gray pt-6">
+              <div className="rounded-lg bg-orange/5 p-4 text-center">
+                <AppText variant="meta" className="text-dark-gray">
+                  Already have one?
+                </AppText>
+                <Link href="/login">
+                  <AppButton variant="secondary" size="md" fullWidth className="mt-3">
+                    Log In
+                  </AppButton>
+                </Link>
+              </div>
+            </div>
           </div>
-        </CardShell>
-      </PageSection>
-    </AppPage>
+        </AuthCard>
+      </div>
+    </AuthLayout>
   );
 }

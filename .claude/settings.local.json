@@ -21,7 +21,26 @@
       "Bash(ipconfig)",
       "Bash(curl -s http://localhost:3000/hydration-test)",
       "Bash(curl -s http://192.168.0.113:3000/hydration-test)",
-      "Bash(curl -s -I http://192.168.0.113:3000/_next/static/chunks/main-app.js)"
+      "Bash(curl -s -I http://192.168.0.113:3000/_next/static/chunks/main-app.js)",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\Tyler\\\\Documents\\\\the-tab\" -Depth 2)",
+      "PowerShell(Move-Item -Path \"C:\\\\Users\\\\Tyler\\\\Documents\\\\the-tab\\\\774c3c10-d5a6-4324-9366-6579c9e6770f.png\" -Destination \"C:\\\\Users\\\\Tyler\\\\Documents\\\\the-tab\\\\docs\\\\mockups\\\\01-DESIGN_SYSTEM_COMPONENTS.png\" -Force)",
+      "PowerShell(Move-Item -Path \"C:\\\\Users\\\\Tyler\\\\Documents\\\\the-tab\\\\ChatGPT Image May 10, 2026, 10_32_06 PM.png\" -Destination \"C:\\\\Users\\\\Tyler\\\\Documents\\\\the-tab\\\\docs\\\\mockups\\\\02-MOBILE_APP_SCREENS.png\" -Force)",
+      "PowerShell(Move-Item -Path \"C:\\\\Users\\\\Tyler\\\\Documents\\\\the-tab\\\\23435aa0-1cc1-4a11-af29-a11da1d1fbf7.png\" -Destination \"C:\\\\Users\\\\Tyler\\\\Documents\\\\the-tab\\\\docs\\\\mockups\\\\03-ADD_DRINK_FLOW_DETAILS.png\" -Force)",
+      "Bash(npm list *)",
+      "Bash(npm install *)",
+      "Bash(supabase link *)",
+      "PowerShell(npx @supabase/cli link --project-ref rcckigasrkxshcictjoo 2>&1)",
+      "PowerShell(head -50)",
+      "Bash(node /c/Users/Tyler/Documents/the-tab/dump-schema.js)",
+      "Bash(git add *)",
+      "Bash(git commit -m 'Phase 2: Supabase client and auth service layer *)",
+      "Bash(git commit -m ' *)",
+      "Bash(taskkill /F /IM node.exe)",
+      "Bash(mv \"\\(auth\\)\" \"_auth\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/_auth/login)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/leaderboard)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/_auth/test)",
+      "Bash(mv \"_auth\" \"\\(auth\\)\")"
     ]
   }
 }

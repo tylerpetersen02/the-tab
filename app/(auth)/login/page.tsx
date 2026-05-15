@@ -3,14 +3,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { AppPage } from "@/components/common/AppPage";
-import { AppHeader } from "@/components/common/AppHeader";
-import { PageSection } from "@/components/common/PageSection";
-import { CardShell } from "@/components/common/CardShell";
-import { AppButton } from "@/components/common/AppButton";
 import { AppText } from "@/components/common/AppText";
+import { AppButton } from "@/components/common/AppButton";
 import { inputStyles } from "@/lib/inputStyles";
 import { useAuth } from "@/components/auth/useAuth";
+import { AuthLayout } from "@/components/auth/AuthLayout";
+import { AuthCard } from "@/components/auth/AuthCard";
+import { AuthMessage } from "@/components/auth/AuthMessage";
+import { AuthHero } from "@/components/auth/AuthHero";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -31,80 +31,97 @@ export default function LoginPage() {
       setError(result.error);
       setLoading(false);
     } else {
-      router.push("/");
+      router.push("/feed");
     }
   };
 
   return (
-    <AppPage>
-      <AppHeader title="Log In" />
-      <PageSection>
-        <CardShell>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <AppText variant="label">Email</AppText>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
-                className={inputStyles}
-                required
-              />
-            </div>
+    <AuthLayout>
+      <div className="space-y-6">
+        <div className="text-center">
+          <AppText as="h1" variant="pageTitle" className="text-orange mb-2">
+            The Tab
+          </AppText>
+          <AppText variant="body" className="text-dark-gray">
+            Welcome back
+          </AppText>
+        </div>
 
-            <div className="space-y-2">
-              <AppText variant="label">Password</AppText>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className={inputStyles}
-                required
-              />
-            </div>
+        <AuthHero />
 
-            {error && (
-              <div className="rounded-lg bg-red-50 p-3">
-                <AppText variant="caption" className="text-red-700">
-                  {error}
-                </AppText>
+        <AuthCard>
+          <div className="space-y-6">
+            <AuthMessage
+              title="Log in"
+              subtitle="Use the account tied to your tabs and history."
+            />
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <AppText variant="label">Email</AppText>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  className={inputStyles}
+                  required
+                />
               </div>
-            )}
 
-            <AppButton
-              onClick={handleSubmit}
-              disabled={loading}
-              className="w-full"
-            >
-              {loading ? "Logging in..." : "Log In"}
-            </AppButton>
-          </form>
+              <div className="space-y-2">
+                <AppText variant="label">Password</AppText>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className={inputStyles}
+                  required
+                />
+              </div>
 
-          <div className="mt-6 space-y-3 border-t border-medium-gray pt-6">
-            <AppText variant="caption" className="text-center text-dark-gray">
-              Don't have an account?
-            </AppText>
-            <Link href="/auth/signup" className="block">
-              <AppButton variant="secondary" className="w-full">
-                Create Account
-              </AppButton>
-            </Link>
-          </div>
+              {error && (
+                <div className="rounded-lg bg-red-50 p-3">
+                  <AppText variant="caption" className="text-red-700">
+                    {error}
+                  </AppText>
+                </div>
+              )}
 
-          <div className="mt-3">
-            <Link href="/auth/forgot-password">
-              <AppText
-                variant="caption"
-                className="text-center text-teal hover:underline"
+              <div className="text-right">
+                <Link href="/forgot-password">
+                  <AppText variant="meta" className="text-teal hover:underline">
+                    Forgot password?
+                  </AppText>
+                </Link>
+              </div>
+
+              <AppButton
+                onClick={handleSubmit}
+                disabled={loading}
+                size="lg"
+                fullWidth
               >
-                Forgot password?
-              </AppText>
-            </Link>
+                {loading ? "Logging in..." : "Log In"}
+              </AppButton>
+            </form>
+
+            <div className="border-t border-light-gray pt-6">
+              <div className="rounded-lg bg-orange/5 p-4 text-center">
+                <AppText variant="meta" className="text-dark-gray">
+                  New here?
+                </AppText>
+                <Link href="/signup">
+                  <AppButton variant="secondary" size="md" fullWidth className="mt-3">
+                    Create Account
+                  </AppButton>
+                </Link>
+              </div>
+            </div>
           </div>
-        </CardShell>
-      </PageSection>
-    </AppPage>
+        </AuthCard>
+      </div>
+    </AuthLayout>
   );
 }
