@@ -484,7 +484,7 @@ export default function AddDrinkPage() {
               </div>
             </Field>
 
-<Field label="Location Optional">
+            <Field label="Location Optional">
               <input
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
