@@ -628,6 +628,19 @@ export default function AddDrinkPage() {
             Open Tab
           </AppButton>
         </PageSection>
+
+        <ImageCropperModal
+          open={tabCoverCropOpen}
+          imageSrc={tabCoverImageForCrop}
+          title="Adjust Cover Photo"
+          aspect={2 / 1}
+          cropShape="rect"
+          onCancel={() => {
+            setTabCoverCropOpen(false);
+            setTabCoverImageForCrop(null);
+          }}
+          onSave={handleTabCoverCropSave}
+        />
       </AppPage>
     );
   }
@@ -731,17 +744,12 @@ export default function AddDrinkPage() {
                 input.accept = "image/*";
                 input.onchange = (e) => {
                   const file = (e.target as HTMLInputElement).files?.[0];
-                  if (file) {
+                  if (file && file.type.startsWith("image/")) {
                     const reader = new FileReader();
-                    reader.onloadend = () => {
-                      setActiveTab((prev) =>
-                        prev
-                          ? {
-                              ...prev,
-                              coverImageUrl: reader.result as string,
-                            }
-                          : prev
-                      );
+                    reader.onload = (event) => {
+                      const result = event.target?.result as string;
+                      setTabCoverImageForCrop(result);
+                      setTabCoverCropOpen(true);
                     };
                     reader.readAsDataURL(file);
                   }
@@ -817,7 +825,7 @@ export default function AddDrinkPage() {
           open={tabCoverCropOpen}
           imageSrc={tabCoverImageForCrop}
           title="Adjust Cover Photo"
-          aspect={16 / 9}
+          aspect={2 / 1}
           cropShape="rect"
           onCancel={() => {
             setTabCoverCropOpen(false);
@@ -990,7 +998,7 @@ export default function AddDrinkPage() {
               <img
                 src={mediaPreview}
                 alt="Drink preview"
-                className="w-full h-40 rounded-[16px] object-cover"
+                className="w-40 h-40 mx-auto rounded-[16px] object-cover"
               />
               <button
                 onClick={() => setMediaPreview(null)}
@@ -1006,7 +1014,7 @@ export default function AddDrinkPage() {
           open={drinkImageCropOpen}
           imageSrc={drinkImageForCrop}
           title="Adjust Photo"
-          aspect={4 / 5}
+          aspect={1 / 1}
           cropShape="rect"
           onCancel={() => {
             setDrinkImageCropOpen(false);

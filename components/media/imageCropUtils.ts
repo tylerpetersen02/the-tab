@@ -3,7 +3,9 @@ export function createImage(url: string): Promise<HTMLImageElement> {
     const image = new Image();
     image.addEventListener("load", () => resolve(image));
     image.addEventListener("error", (err) => reject(err));
-    image.setAttribute("crossOrigin", "anonymous");
+    if (/^https?:\/\//.test(url)) {
+      image.crossOrigin = "anonymous";
+    }
     image.src = url;
   });
 }

@@ -5,7 +5,7 @@ import { X } from "lucide-react";
 import Cropper from "react-easy-crop";
 import { AppText } from "@/components/common/AppText";
 import { AppButton } from "@/components/common/AppButton";
-import { getCroppedImageResult } from "./imageCropUtils";
+import { getCroppedImageResult, type PixelCrop } from "./imageCropUtils";
 
 export interface ImageCropperModalProps {
   open: boolean;
@@ -31,8 +31,9 @@ export function ImageCropperModal({
 }: ImageCropperModalProps) {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<PixelCrop | null>(null);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const originalOverflow = useRef<string>("");
 
   useEffect(() => {
@@ -49,22 +50,34 @@ export function ImageCropperModal({
   }, [open]);
 
   const handleCropComplete = (
-    _croppedArea: any,
-    croppedAreaPixels: any
+    _croppedArea: unknown,
+    croppedAreaPixels: PixelCrop
   ) => {
     setCroppedAreaPixels(croppedAreaPixels);
   };
 
   const handleSave = async () => {
-    if (!imageSrc || !croppedAreaPixels) return;
+    setError(null);
+
+    if (!imageSrc) {
+      setError("No image to crop");
+      return;
+    }
+
+    if (!croppedAreaPixels) {
+      setError("Please adjust the image first");
+      return;
+    }
 
     setSaving(true);
     try {
       const result = await getCroppedImageResult(imageSrc, croppedAreaPixels);
       onSave(result);
       setSaving(false);
-    } catch (error) {
-      console.error("Error cropping image:", error);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Could not adjust this image. Try another photo.";
+      setError(message);
+      console.error("Error cropping image:", err);
       setSaving(false);
     }
   };
@@ -91,7 +104,7 @@ export function ImageCropperModal({
       </header>
 
       {/* Crop Area */}
-      <div className="flex-1 flex min-h-0 overflow-hidden">
+      <div className="relative min-h-0 flex-1 overflow-hidden">
         <Cropper
           image={imageSrc}
           crop={crop}
@@ -126,6 +139,15 @@ export function ImageCropperModal({
           {zoom.toFixed(1)}x
         </AppText>
       </div>
+
+      {/* Error Message */}
+      {error && (
+        <div className="shrink-0 px-4 py-3 bg-red-50">
+          <AppText variant="bodySmall" className="text-red-700">
+            {error}
+          </AppText>
+        </div>
+      )}
 
       {/* Action Buttons */}
       <div className="shrink-0 flex gap-3 px-4 py-4 bg-white rounded-t-[28px]">

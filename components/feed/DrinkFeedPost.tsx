@@ -96,7 +96,7 @@ export function DrinkFeedPost({
       {/* Media */}
       <div className="mt-5 overflow-hidden rounded-[26px]">
         <div
-          className={`aspect-[4/3] bg-gradient-to-br ${mediaGradient}`}
+          className={`aspect-square bg-gradient-to-br ${mediaGradient}`}
         />
       </div>
 
