@@ -11,12 +11,9 @@ export function AuthHero() {
           <Beer className="h-8 w-8 text-white" />
         </div>
 
-        <div className="space-y-2">
+        <div>
           <AppText variant="cardTitle" className="text-white">
             Open tabs. Add drinks.
-          </AppText>
-          <AppText variant="body" className="text-white/90">
-            Keep the receipts with your favorite people.
           </AppText>
         </div>
 

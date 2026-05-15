@@ -12,6 +12,7 @@ interface DrinkFeedPostProps {
   user: {
     name: string;
     initials: string;
+    avatarUrl?: string | null;
   };
   session: {
     title: string;
@@ -56,7 +57,7 @@ export function DrinkFeedPost({
       {/* Header */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
-          <UserAvatar initials={user.initials} />
+          <UserAvatar initials={user.initials} avatarUrl={user.avatarUrl} />
           <div>
             <AppText variant="cardTitle">{user.name}</AppText>
             <AppText variant="meta" className="mt-1">

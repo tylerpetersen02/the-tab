@@ -1,7 +1,11 @@
+"use client";
+
 import { Bell } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { useAuth } from "@/components/auth/useAuth";
+import { useAppShell } from "@/components/layout/AppShellContext";
 import { IconCircle } from "@/components/common/IconCircle";
 import { AppText } from "@/components/common/AppText";
+import { UserAvatar } from "@/components/common/UserAvatar";
 
 interface AppHeaderProps {
   title?: string;
@@ -10,6 +14,9 @@ interface AppHeaderProps {
 }
 
 export function AppHeader({ title = "The Tab", subtitle, titleClassName }: AppHeaderProps) {
+  const { user } = useAuth();
+  const { openProfileDrawer } = useAppShell();
+
   return (
     <header className="flex items-center justify-between px-5 pt-4 pb-3">
       <div>
@@ -28,8 +35,15 @@ export function AppHeader({ title = "The Tab", subtitle, titleClassName }: AppHe
           <Bell className="h-5 w-5 text-ink" />
         </IconCircle>
 
-        <button className="relative h-10 w-10 rounded-full bg-white border border-medium-gray shadow-[0_4px_14px_rgba(0,21,36,0.04)] flex items-center justify-center text-sm font-black hover:shadow-[0_6px_16px_rgba(0,21,36,0.06)] transition-shadow">
-          TP
+        <button
+          onClick={openProfileDrawer}
+          className="relative hover:opacity-80 transition-opacity"
+        >
+          <UserAvatar
+            initials={user?.initials || "?"}
+            size="md"
+            avatarUrl={user?.avatar_url}
+          />
           <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-orange border-2 border-white" />
         </button>
       </div>

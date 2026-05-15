@@ -2,6 +2,24 @@
 
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { BottomNav } from "@/components/layout/BottomNav";
+import { ProfileDrawer } from "@/components/layout/ProfileDrawer";
+import { AppShellProvider, useAppShell } from "@/components/layout/AppShellContext";
+
+function AppLayoutContent({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const { profileDrawerOpen, closeProfileDrawer } = useAppShell();
+
+  return (
+    <ProtectedRoute>
+      {children}
+      <BottomNav />
+      <ProfileDrawer open={profileDrawerOpen} onClose={closeProfileDrawer} />
+    </ProtectedRoute>
+  );
+}
 
 export default function AppLayout({
   children,
@@ -9,9 +27,8 @@ export default function AppLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ProtectedRoute>
-      {children}
-      <BottomNav />
-    </ProtectedRoute>
+    <AppShellProvider>
+      <AppLayoutContent>{children}</AppLayoutContent>
+    </AppShellProvider>
   );
 }

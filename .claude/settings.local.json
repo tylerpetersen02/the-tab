@@ -40,7 +40,9 @@
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/_auth/login)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/leaderboard)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/_auth/test)",
-      "Bash(mv \"_auth\" \"\\(auth\\)\")"
+      "Bash(mv \"_auth\" \"\\(auth\\)\")",
+      "Bash(git push *)",
+      "Bash(git commit -m 'Simplify auth pages: remove card around inputs, remove subtitle from login *)"
     ]
   }
 }

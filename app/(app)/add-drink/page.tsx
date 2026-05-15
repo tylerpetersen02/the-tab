@@ -43,6 +43,7 @@ type Member = {
   id: string;
   name: string;
   initials: string;
+  avatarUrl?: string | null;
   contributionOz: number;
   beers: number;
   bonusDrinks: number;
@@ -1024,7 +1025,7 @@ function MembersCard({ activeTab }: { activeTab: ActiveTab }) {
           return (
             <div key={member.id} className="flex flex-col items-center text-center">
               <div className="relative">
-                <UserAvatar initials={member.initials} size="md" />
+                <UserAvatar initials={member.initials} size="md" avatarUrl={member.avatarUrl} />
 
                 {isOverflowAvatar && (
                   <div className="absolute -bottom-1 -right-1 flex h-6 min-w-[24px] items-center justify-center rounded-full border-2 border-white bg-orange px-1">

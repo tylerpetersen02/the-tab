@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Eye, EyeOff } from "lucide-react";
 import { AppText } from "@/components/common/AppText";
 import { AppButton } from "@/components/common/AppButton";
 import { inputStyles } from "@/lib/inputStyles";
@@ -15,6 +16,7 @@ export default function LoginPage() {
   const { signIn } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -40,20 +42,11 @@ export default function LoginPage() {
           <AppText as="h1" variant="brand" className="text-teal mb-2">
             The Tab
           </AppText>
-          <AppText variant="body" className="text-dark-gray">
-            Welcome back
-          </AppText>
         </div>
 
         <AuthHero />
 
-        <div className="space-y-6">
-          <div className="text-center">
-            <AppText as="h2" variant="cardTitle">
-              Log in
-            </AppText>
-          </div>
-
+        <div className="space-y-4">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <AppText variant="meta" className="text-ink">Email</AppText>
@@ -69,14 +62,27 @@ export default function LoginPage() {
 
             <div className="space-y-2">
               <AppText variant="meta" className="text-ink">Password</AppText>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className={inputStyles}
-                required
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className={inputStyles}
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-medium-gray hover:text-dark-gray"
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </button>
+              </div>
             </div>
 
             {error && (
@@ -105,7 +111,7 @@ export default function LoginPage() {
             </Link>
           </div>
 
-          <div className="rounded-lg bg-orange/5 p-4 text-center">
+          <div className="rounded-lg bg-orange/5 p-4 text-center -mt-2">
             <AppText variant="bodySmall" className="text-dark-gray">
               New here?
             </AppText>

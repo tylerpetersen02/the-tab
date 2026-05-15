@@ -1,4 +1,7 @@
-﻿export type AuthProfile = {
+﻿// TODO: Consider adding first_name and last_name columns to profiles table for better flexibility
+// with profile editing, personalization, search, and display name changes without losing originals.
+// Currently signup converts firstName/lastName form inputs into display_name and auto-generated username.
+export type AuthProfile = {
   id: string;
   email: string | null;
   display_name: string;
@@ -17,6 +20,7 @@ export type SignUpPayload = {
   password: string;
   display_name: string;
   username: string;
+  initials?: string;
 };
 
 export type AuthResult = {

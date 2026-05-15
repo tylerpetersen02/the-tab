@@ -50,7 +50,7 @@ export default function ForgotPasswordPage() {
                 </AppText>
 
                 <div className="rounded-lg bg-teal-50 p-4">
-                  <AppText variant="caption" className="text-teal">
+                  <AppText variant="bodySmall" className="text-teal">
                     The link will expire in 24 hours
                   </AppText>
                 </div>

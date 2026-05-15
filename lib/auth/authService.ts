@@ -36,6 +36,7 @@ export const authService = {
           data: {
             display_name: payload.display_name,
             username: payload.username,
+            initials: payload.initials,
           },
         },
       });

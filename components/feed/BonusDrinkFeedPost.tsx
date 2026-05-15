@@ -8,6 +8,7 @@ interface BonusDrinkFeedPostProps {
   user: {
     name: string;
     initials: string;
+    avatarUrl?: string | null;
   };
   session: {
     title: string;
@@ -33,7 +34,7 @@ export function BonusDrinkFeedPost({
   return (
     <CardShell variant="compact" className="px-4 py-3">
       <div className="flex items-center gap-3">
-        <UserAvatar initials={user.initials} size="sm" />
+        <UserAvatar initials={user.initials} size="sm" avatarUrl={user.avatarUrl} />
 
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-1.5">

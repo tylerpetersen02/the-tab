@@ -17,6 +17,7 @@ export interface FeedPost {
   user: {
     name: string;
     initials: string;
+    avatarUrl?: string | null;
   };
   session: {
     title: string;

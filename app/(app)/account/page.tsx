@@ -12,6 +12,7 @@ import { AppText } from "@/components/common/AppText";
 import { UserAvatar } from "@/components/common/UserAvatar";
 import { inputStyles } from "@/lib/inputStyles";
 import { useAuth } from "@/components/auth/useAuth";
+import { AvatarUpload } from "@/components/common/AvatarUpload";
 
 export default function AccountPage() {
   const router = useRouter();
@@ -105,7 +106,11 @@ export default function AccountPage() {
           <div className="space-y-6">
             {/* Avatar & Name */}
             <div className="flex items-center gap-4">
-              <UserAvatar initials={user.initials || "?"} size="lg" />
+              <UserAvatar
+                initials={user.initials || "?"}
+                size="lg"
+                avatarUrl={user.avatar_url}
+              />
               <div className="flex-1">
                 <AppText variant="cardTitle">{user.display_name}</AppText>
                 <AppText variant="meta" className="text-dark-gray">
@@ -160,7 +165,20 @@ export default function AccountPage() {
         <PageSection>
           <div className="space-y-4">
             <div>
-              <AppText variant="label">Display Name</AppText>
+              <AppText variant="meta" className="text-ink mb-3 block">
+                Profile Photo
+              </AppText>
+              <AvatarUpload
+                userId={user.id}
+                currentAvatarUrl={user.avatar_url}
+                onUploadComplete={(avatarUrl) => {
+                  // Update user state with new avatar
+                  // This will be reflected through the next profile fetch
+                }}
+              />
+            </div>
+            <div>
+              <AppText variant="meta" className="text-ink">Display Name</AppText>
               <input
                 type="text"
                 name="display_name"
@@ -172,7 +190,7 @@ export default function AccountPage() {
             </div>
 
             <div>
-              <AppText variant="label">Username</AppText>
+              <AppText variant="meta" className="text-ink">Username</AppText>
               <input
                 type="text"
                 name="username"
@@ -184,7 +202,7 @@ export default function AccountPage() {
             </div>
 
             <div>
-              <AppText variant="label">Bio</AppText>
+              <AppText variant="meta" className="text-ink">Bio</AppText>
               <textarea
                 name="bio"
                 value={formData.bio}
@@ -196,7 +214,7 @@ export default function AccountPage() {
             </div>
 
             <div>
-              <AppText variant="label">Home City</AppText>
+              <AppText variant="meta" className="text-ink">Home City</AppText>
               <input
                 type="text"
                 name="home_city"
@@ -209,7 +227,7 @@ export default function AccountPage() {
 
             {error && (
               <div className="rounded-lg bg-red-50 p-3">
-                <AppText variant="caption" className="text-red-700">
+                <AppText variant="bodySmall" className="text-red-700">
                   {error}
                 </AppText>
               </div>

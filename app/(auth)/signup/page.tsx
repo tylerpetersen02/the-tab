@@ -3,23 +3,23 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Eye, EyeOff } from "lucide-react";
 import { AppText } from "@/components/common/AppText";
 import { AppButton } from "@/components/common/AppButton";
 import { inputStyles } from "@/lib/inputStyles";
 import { useAuth } from "@/components/auth/useAuth";
 import { AuthLayout } from "@/components/auth/AuthLayout";
-import { AuthCard } from "@/components/auth/AuthCard";
-import { AuthMessage } from "@/components/auth/AuthMessage";
-import { AuthHero } from "@/components/auth/AuthHero";
 
 export default function SignupPage() {
   const router = useRouter();
   const { signUp } = useAuth();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [displayName, setDisplayName] = useState("");
-  const [username, setUsername] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -34,11 +34,24 @@ export default function SignupPage() {
 
     setLoading(true);
 
+    // Generate username with random suffix to avoid collisions
+    const sanitizedUsername = `${firstName}${lastName}`
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, "");
+    const randomSuffix = Math.floor(100 + Math.random() * 900);
+    const username = `${sanitizedUsername}${randomSuffix}`;
+
+    // Generate initials from first and last name
+    const firstInitial = firstName.trim().charAt(0).toUpperCase();
+    const lastInitial = lastName.trim().charAt(0).toUpperCase();
+    const initials = `${firstInitial}${lastInitial}`;
+
     const result = await signUp({
       email,
       password,
-      display_name: displayName,
+      display_name: `${firstName.trim()} ${lastName.trim()}`,
       username,
+      initials,
     });
 
     if (result.error) {
@@ -53,118 +66,125 @@ export default function SignupPage() {
     <AuthLayout>
       <div className="space-y-6">
         <div className="text-center">
-          <AppText as="h1" variant="brand" className="text-teal mb-2">
-            The Tab
-          </AppText>
-          <AppText variant="body" className="text-dark-gray">
-            Open your tab
+          <AppText as="h1" variant="brand" className="text-teal">
+            Create Account
           </AppText>
         </div>
 
-        <AuthHero />
-
-        <div className="space-y-6">
-          <div className="text-center">
-            <AppText as="h2" variant="cardTitle">
-              Create account
-            </AppText>
-            <AppText variant="meta" className="text-dark-gray mt-1">
-              Your name and username show on tabs and comments.
-            </AppText>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <AppText variant="meta" className="text-ink">First Name</AppText>
+            <input
+              type="text"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              placeholder="John"
+              className={inputStyles}
+              required
+            />
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <AppText variant="meta" className="text-ink">Display Name</AppText>
-              <input
-                type="text"
-                value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
-                placeholder="Tyler Petersen"
-                className={inputStyles}
-                required
-              />
-            </div>
+          <div className="space-y-2">
+            <AppText variant="meta" className="text-ink">Last Name</AppText>
+            <input
+              type="text"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              placeholder="Doe"
+              className={inputStyles}
+              required
+            />
+          </div>
 
-            <div className="space-y-2">
-              <AppText variant="meta" className="text-ink">Username</AppText>
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="tylerpetersen"
-                className={inputStyles}
-                required
-              />
-              <AppText variant="meta" className="text-teal">
-                @{username || "username"}
-              </AppText>
-            </div>
+          <div className="space-y-2">
+            <AppText variant="meta" className="text-ink">Email</AppText>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              className={inputStyles}
+              required
+            />
+          </div>
 
-            <div className="space-y-2">
-              <AppText variant="meta" className="text-ink">Email</AppText>
+          <div className="space-y-2">
+            <AppText variant="meta" className="text-ink">Password</AppText>
+            <div className="relative">
               <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
-                className={inputStyles}
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <AppText variant="meta" className="text-ink">Password</AppText>
-              <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Minimum 8 characters"
                 className={inputStyles}
                 required
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-medium-gray hover:text-dark-gray"
+              >
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </button>
             </div>
+          </div>
 
-            <div className="space-y-2">
-              <AppText variant="meta" className="text-ink">Confirm Password</AppText>
+          <div className="space-y-2">
+            <AppText variant="meta" className="text-ink">Confirm Password</AppText>
+            <div className="relative">
               <input
-                type="password"
+                type={showConfirmPassword ? "text" : "password"}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••"
                 className={inputStyles}
                 required
               />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-medium-gray hover:text-dark-gray"
+              >
+                {showConfirmPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </button>
             </div>
-
-            {error && (
-              <div className="rounded-lg bg-red-50 p-3">
-                <AppText variant="bodySmall" className="text-red-700">
-                  {error}
-                </AppText>
-              </div>
-            )}
-
-            <AppButton
-              type="submit"
-              disabled={loading}
-              size="lg"
-              fullWidth
-            >
-              {loading ? "Creating account..." : "Create Account"}
-            </AppButton>
-          </form>
-
-          <div className="rounded-lg bg-orange/5 p-4 text-center">
-            <AppText variant="bodySmall" className="text-dark-gray">
-              Already have one?
-            </AppText>
-            <Link href="/login">
-              <AppText variant="body" className="mt-2 text-teal">
-                Log In
-              </AppText>
-            </Link>
           </div>
+
+          {error && (
+            <div className="rounded-lg bg-red-50 p-3">
+              <AppText variant="bodySmall" className="text-red-700">
+                {error}
+              </AppText>
+            </div>
+          )}
+
+          <AppButton
+            type="submit"
+            disabled={loading}
+            size="lg"
+            fullWidth
+          >
+            {loading ? "Creating account..." : "Create Account"}
+          </AppButton>
+        </form>
+
+        <div className="rounded-lg bg-orange/5 p-4 text-center">
+          <AppText variant="bodySmall" className="text-dark-gray">
+            Already have one?
+          </AppText>
+          <Link href="/login">
+            <AppText variant="body" className="mt-2 text-teal">
+              Log In
+            </AppText>
+          </Link>
         </div>
       </div>
     </AuthLayout>
