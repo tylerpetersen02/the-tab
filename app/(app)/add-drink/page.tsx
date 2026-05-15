@@ -30,6 +30,8 @@ import { UserAvatar } from "@/components/common/UserAvatar";
 import { shadows } from "@/lib/shadows";
 import { gradients } from "@/lib/gradients";
 import { inputStyles, selectStyles, textareaStyles } from "@/lib/inputStyles";
+import { TabMemoriesPreview } from "@/components/media/TabMemoriesPreview";
+import { TabMediaViewer } from "@/components/media/TabMediaViewer";
 
 type Screen = "gate" | "create_tab" | "join_tab" | "current_tab" | "add_drink";
 
@@ -59,6 +61,23 @@ type ActivityItem = {
   time: string;
 };
 
+type TabMediaItem = {
+  id: string;
+  drinkId: string;
+  userId: string;
+  userName: string;
+  userInitials: string;
+  userAvatarUrl?: string | null;
+  type: "image" | "video";
+  url: string;
+  thumbnailUrl?: string;
+  caption?: string;
+  drinkType: "beer" | "wine" | "seltzer" | "shot" | "cocktail";
+  drinkNumber?: number;
+  ounces?: number;
+  createdAt: string;
+};
+
 type ActiveTab = {
   id: string;
   title: string;
@@ -79,6 +98,7 @@ type ActiveTab = {
   coverImageUrl?: string | null;
   members: Member[];
   activities: ActivityItem[];
+  media: TabMediaItem[];
 };
 
 const MOCK_AVATARS = ["TP", "MK", "DN", "RY"];
@@ -127,6 +147,8 @@ export default function AddDrinkPage() {
   const [screen, setScreen] = useState<Screen>("gate");
   const [activeTab, setActiveTab] = useState<ActiveTab | null>(null);
   const [showCloseConfirm, setShowCloseConfirm] = useState(false);
+  const [mediaViewerOpen, setMediaViewerOpen] = useState(false);
+  const [mediaViewerStartIndex, setMediaViewerStartIndex] = useState(0);
 
   const [tabTitle, setTabTitle] = useState("Friday Night Alpha");
   const [tabCoverPreview, setTabCoverPreview] = useState<string | null>(null);
@@ -203,6 +225,61 @@ export default function AddDrinkPage() {
           user: "Mike",
           detail: "added a Shot",
           time: "2m ago",
+        },
+      ],
+      media: [
+        {
+          id: "m1",
+          drinkId: "d1",
+          userId: "u1",
+          userName: "Tyler",
+          userInitials: "TP",
+          type: "image",
+          url: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%2315616d' width='400' height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='24' fill='white' text-anchor='middle' dominant-baseline='middle'%3EBeer #1%3C/text%3E%3C/svg%3E",
+          caption: "First beer of the night!",
+          drinkType: "beer",
+          drinkNumber: 1,
+          ounces: 16,
+          createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+        },
+        {
+          id: "m2",
+          drinkId: "d2",
+          userId: "u2",
+          userName: "Mike",
+          userInitials: "MK",
+          type: "image",
+          url: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%239bc8e8' width='400' height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='24' fill='white' text-anchor='middle' dominant-baseline='middle'%3EBeer #2%3C/text%3E%3C/svg%3E",
+          caption: "Mike's round",
+          drinkType: "beer",
+          drinkNumber: 2,
+          ounces: 16,
+          createdAt: new Date(Date.now() - 100 * 60 * 1000).toISOString(),
+        },
+        {
+          id: "m3",
+          drinkId: "d3",
+          userId: "u3",
+          userName: "Dan",
+          userInitials: "DN",
+          type: "image",
+          url: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f4a261' width='400' height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='24' fill='white' text-anchor='middle' dominant-baseline='middle'%3EShot%3C/text%3E%3C/svg%3E",
+          drinkType: "shot",
+          createdAt: new Date(Date.now() - 50 * 60 * 1000).toISOString(),
+        },
+        {
+          id: "m4",
+          drinkId: "d4",
+          userId: "u1",
+          userName: "Tyler",
+          userInitials: "TP",
+          type: "image",
+          url: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%2315616d' width='400' height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='24' fill='white' text-anchor='middle' dominant-baseline='middle'%3EBeer #3%3C/text%3E%3C/svg%3E",
+          caption: "Round 2!",
+          drinkType: "beer",
+          drinkNumber: 3,
+          ounces: 16,
+          createdAt: new Date(Date.now() - 20 * 60 * 1000).toISOString(),
         },
       ],
     };
@@ -596,6 +673,20 @@ export default function AddDrinkPage() {
         </PageSection>
 
         <PageSection>
+          <TabMemoriesPreview
+            media={activeTab.media}
+            onViewAll={() => {
+              setMediaViewerStartIndex(0);
+              setMediaViewerOpen(true);
+            }}
+            onThumbnailClick={(index) => {
+              setMediaViewerStartIndex(index);
+              setMediaViewerOpen(true);
+            }}
+          />
+        </PageSection>
+
+        <PageSection>
           <div className="grid grid-cols-4 gap-2">
             <ActionTile label="Invite" icon={<Users className="h-4 w-4" />} />
             <ActionTile label="Join Code" icon={<Copy className="h-4 w-4" />} />
@@ -681,6 +772,14 @@ export default function AddDrinkPage() {
             </div>
           </div>
         )}
+
+        <TabMediaViewer
+          open={mediaViewerOpen}
+          media={activeTab.media}
+          startIndex={mediaViewerStartIndex}
+          tabTitle={activeTab.title}
+          onClose={() => setMediaViewerOpen(false)}
+        />
       </AppPage>
     );
   }
