@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { BottomNav } from "@/components/layout/BottomNav";
+import { AuthClientShell } from "@/components/auth/AuthClientShell";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -23,8 +24,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full antialiased">
       <body className="w-full bg-off-white">
-        {children}
-        <BottomNav />
+        <AuthClientShell>
+          {children}
+          <BottomNav />
+        </AuthClientShell>
       </body>
     </html>
   );
