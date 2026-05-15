@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
@@ -22,6 +22,10 @@ export default function SignupPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const lastNameRef = useRef<HTMLInputElement | null>(null);
+  const emailRef = useRef<HTMLInputElement | null>(null);
+  const passwordRef = useRef<HTMLInputElement | null>(null);
+  const confirmPasswordRef = useRef<HTMLInputElement | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -80,6 +84,14 @@ export default function SignupPage() {
               onChange={(e) => setFirstName(e.target.value)}
               placeholder="John"
               className={inputStyles}
+              autoComplete="given-name"
+              enterKeyHint="next"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  lastNameRef.current?.focus();
+                }
+              }}
               required
             />
           </div>
@@ -87,11 +99,20 @@ export default function SignupPage() {
           <div className="space-y-2">
             <AppText variant="meta" className="text-ink">Last Name</AppText>
             <input
+              ref={lastNameRef}
               type="text"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               placeholder="Doe"
               className={inputStyles}
+              autoComplete="family-name"
+              enterKeyHint="next"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  emailRef.current?.focus();
+                }
+              }}
               required
             />
           </div>
@@ -99,11 +120,21 @@ export default function SignupPage() {
           <div className="space-y-2">
             <AppText variant="meta" className="text-ink">Email</AppText>
             <input
+              ref={emailRef}
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
               className={inputStyles}
+              inputMode="email"
+              autoComplete="email"
+              enterKeyHint="next"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  passwordRef.current?.focus();
+                }
+              }}
               required
             />
           </div>
@@ -112,11 +143,20 @@ export default function SignupPage() {
             <AppText variant="meta" className="text-ink">Password</AppText>
             <div className="relative">
               <input
+                ref={passwordRef}
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Minimum 8 characters"
                 className={inputStyles}
+                autoComplete="new-password"
+                enterKeyHint="next"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    confirmPasswordRef.current?.focus();
+                  }
+                }}
                 required
               />
               <button
@@ -137,11 +177,14 @@ export default function SignupPage() {
             <AppText variant="meta" className="text-ink">Confirm Password</AppText>
             <div className="relative">
               <input
+                ref={confirmPasswordRef}
                 type={showConfirmPassword ? "text" : "password"}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••"
                 className={inputStyles}
+                autoComplete="new-password"
+                enterKeyHint="done"
                 required
               />
               <button

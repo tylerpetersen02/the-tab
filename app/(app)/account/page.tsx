@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { LogOut, Edit2, Check, X } from "lucide-react";
 import { AppPage } from "@/components/common/AppPage";
@@ -12,7 +12,7 @@ import { AppText } from "@/components/common/AppText";
 import { UserAvatar } from "@/components/common/UserAvatar";
 import { inputStyles } from "@/lib/inputStyles";
 import { useAuth } from "@/components/auth/useAuth";
-import { AvatarUpload } from "@/components/common/AvatarUpload";
+import { ImageCropperModal } from "@/components/media/ImageCropperModal";
 
 export default function AccountPage() {
   const router = useRouter();
@@ -20,6 +20,11 @@ export default function AccountPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [avatarCropOpen, setAvatarCropOpen] = useState(false);
+  const [avatarImageForCrop, setAvatarImageForCrop] = useState<string | null>(null);
+  const [croppedAvatarUrl, setCroppedAvatarUrl] = useState<string | null>(null);
+  const avatarFileInputRef = useRef<HTMLInputElement>(null);
+  const avatarCameraInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState({
     display_name: user?.display_name || "",
@@ -67,6 +72,28 @@ export default function AccountPage() {
   const handleSignOut = async () => {
     await signOut();
     router.push("/login");
+  };
+
+  const handleAvatarImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const result = event.target?.result as string;
+        setAvatarImageForCrop(result);
+        setAvatarCropOpen(true);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleAvatarCropSave = (result: {
+    croppedImageUrl: string;
+    croppedBlob: Blob;
+  }) => {
+    setCroppedAvatarUrl(result.croppedImageUrl);
+    setAvatarCropOpen(false);
+    setAvatarImageForCrop(null);
   };
 
   if (loading) {
@@ -168,14 +195,64 @@ export default function AccountPage() {
               <AppText variant="meta" className="text-ink mb-3 block">
                 Profile Photo
               </AppText>
-              <AvatarUpload
-                userId={user.id}
-                currentAvatarUrl={user.avatar_url}
-                onUploadComplete={(avatarUrl) => {
-                  // Update user state with new avatar
-                  // This will be reflected through the next profile fetch
-                }}
+              <input
+                ref={avatarFileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleAvatarImageSelect}
+                className="hidden"
               />
+              <input
+                ref={avatarCameraInputRef}
+                type="file"
+                accept="image/*"
+                capture="environment"
+                onChange={handleAvatarImageSelect}
+                className="hidden"
+              />
+              {croppedAvatarUrl ? (
+                <div className="space-y-2">
+                  <img
+                    src={croppedAvatarUrl}
+                    alt="Cropped avatar"
+                    className="w-24 h-24 rounded-full object-cover"
+                  />
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => avatarFileInputRef.current?.click()}
+                      className="text-sm text-teal font-semibold"
+                    >
+                      Change photo
+                    </button>
+                    <button
+                      onClick={() => setCroppedAvatarUrl(null)}
+                      className="text-sm text-teal font-semibold"
+                    >
+                      Remove photo
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex gap-2">
+                  <AppButton
+                    variant="secondary"
+                    size="md"
+                    onClick={() => avatarFileInputRef.current?.click()}
+                    className="flex-1"
+                  >
+                    Upload Photo
+                  </AppButton>
+
+                  <AppButton
+                    variant="secondary"
+                    size="md"
+                    onClick={() => avatarCameraInputRef.current?.click()}
+                    className="flex-1"
+                  >
+                    Take Photo
+                  </AppButton>
+                </div>
+              )}
             </div>
             <div>
               <AppText variant="meta" className="text-ink">Display Name</AppText>
@@ -289,6 +366,19 @@ export default function AccountPage() {
           Sign Out
         </AppButton>
       </PageSection>
+
+      <ImageCropperModal
+        open={avatarCropOpen}
+        imageSrc={avatarImageForCrop}
+        title="Adjust Profile Photo"
+        aspect={1}
+        cropShape="round"
+        onCancel={() => {
+          setAvatarCropOpen(false);
+          setAvatarImageForCrop(null);
+        }}
+        onSave={handleAvatarCropSave}
+      />
     </AppPage>
   );
 }

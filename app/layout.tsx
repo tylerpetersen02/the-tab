@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { AuthClientShell } from "@/components/auth/AuthClientShell";
+import { ScrollToTop } from "@/components/common/ScrollToTop";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -23,6 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full antialiased">
       <body className="w-full bg-off-white">
+        <ScrollToTop />
         <AuthClientShell>{children}</AuthClientShell>
       </body>
     </html>

@@ -30,8 +30,10 @@ import { UserAvatar } from "@/components/common/UserAvatar";
 import { shadows } from "@/lib/shadows";
 import { gradients } from "@/lib/gradients";
 import { inputStyles, selectStyles, textareaStyles } from "@/lib/inputStyles";
+import { scrollToTop } from "@/lib/scroll";
 import { TabMemoriesPreview } from "@/components/media/TabMemoriesPreview";
 import { TabMediaViewer } from "@/components/media/TabMediaViewer";
+import { ImageCropperModal } from "@/components/media/ImageCropperModal";
 import type { TabMediaItem } from "@/components/media/types";
 
 type Screen = "gate" | "create_tab" | "join_tab" | "current_tab" | "add_drink";
@@ -133,9 +135,13 @@ export default function AddDrinkPage() {
   const [showCloseConfirm, setShowCloseConfirm] = useState(false);
   const [mediaViewerOpen, setMediaViewerOpen] = useState(false);
   const [mediaViewerStartIndex, setMediaViewerStartIndex] = useState(0);
+  const [drinkImageCropOpen, setDrinkImageCropOpen] = useState(false);
+  const [drinkImageForCrop, setDrinkImageForCrop] = useState<string | null>(null);
 
   const [tabTitle, setTabTitle] = useState("Friday Night Alpha");
   const [tabCoverPreview, setTabCoverPreview] = useState<string | null>(null);
+  const [tabCoverCropOpen, setTabCoverCropOpen] = useState(false);
+  const [tabCoverImageForCrop, setTabCoverImageForCrop] = useState<string | null>(null);
   const [visibility, setVisibility] = useState<Visibility>("open");
   const [location, setLocation] = useState("San Diego, CA");
   const [ounceGoal, setOunceGoal] = useState("320");
@@ -164,6 +170,50 @@ export default function AddDrinkPage() {
     const cleaned = title.replace(/[^a-zA-Z0-9]/g, "").slice(0, 5).toUpperCase();
     const suffix = Math.floor(100 + Math.random() * 900);
     return `${cleaned || "TAB"}${suffix}`;
+  }
+
+  function handleTabCoverImageSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (file && file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const result = event.target?.result as string;
+        setTabCoverImageForCrop(result);
+        setTabCoverCropOpen(true);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function handleTabCoverCropSave(result: {
+    croppedImageUrl: string;
+    croppedBlob: Blob;
+  }) {
+    setTabCoverPreview(result.croppedImageUrl);
+    setTabCoverCropOpen(false);
+    setTabCoverImageForCrop(null);
+  }
+
+  function handleDrinkImageSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (file && file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const result = event.target?.result as string;
+        setDrinkImageForCrop(result);
+        setDrinkImageCropOpen(true);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function handleDrinkImageCropSave(result: {
+    croppedImageUrl: string;
+    croppedBlob: Blob;
+  }) {
+    setMediaPreview(result.croppedImageUrl);
+    setDrinkImageCropOpen(false);
+    setDrinkImageForCrop(null);
   }
 
   function handleCreateTab() {
@@ -274,6 +324,7 @@ export default function AddDrinkPage() {
 
     setActiveTab(createdTab);
     setScreen("current_tab");
+    scrollToTop();
   }
 
   function handleJoinTab() {
@@ -304,10 +355,12 @@ export default function AddDrinkPage() {
           time: "just now",
         },
       ],
+      media: [],
     };
 
     setActiveTab(joinedTab);
     setScreen("current_tab");
+    scrollToTop();
   }
 
   function handlePostDrink() {
@@ -500,16 +553,7 @@ export default function AddDrinkPage() {
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        const reader = new FileReader();
-                        reader.onloadend = () => {
-                          setTabCoverPreview(reader.result as string);
-                        };
-                        reader.readAsDataURL(file);
-                      }
-                    }}
+                    onChange={handleTabCoverImageSelect}
                     className="hidden"
                   />
                 </label>
@@ -768,6 +812,19 @@ export default function AddDrinkPage() {
           tabTitle={activeTab.title}
           onClose={() => setMediaViewerOpen(false)}
         />
+
+        <ImageCropperModal
+          open={tabCoverCropOpen}
+          imageSrc={tabCoverImageForCrop}
+          title="Adjust Cover Photo"
+          aspect={16 / 9}
+          cropShape="rect"
+          onCancel={() => {
+            setTabCoverCropOpen(false);
+            setTabCoverImageForCrop(null);
+          }}
+          onSave={handleTabCoverCropSave}
+        />
       </AppPage>
     );
   }
@@ -904,8 +961,19 @@ export default function AddDrinkPage() {
         </PageSection>
 
         <PageSection>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleDrinkImageSelect}
+            className="hidden"
+            id="drink-image-input"
+          />
           <div className="grid grid-cols-[auto_auto_1fr] gap-3">
-            <AppButton variant="muted" size="md">
+            <AppButton
+              variant={mediaPreview ? "secondary" : "muted"}
+              size="md"
+              onClick={() => document.getElementById("drink-image-input")?.click()}
+            >
               <Camera className="h-4 w-4" />
               Photo
             </AppButton>
@@ -917,7 +985,35 @@ export default function AddDrinkPage() {
               Post Drink
             </AppButton>
           </div>
+          {mediaPreview && (
+            <div className="mt-3 space-y-2">
+              <img
+                src={mediaPreview}
+                alt="Drink preview"
+                className="w-full h-40 rounded-[16px] object-cover"
+              />
+              <button
+                onClick={() => setMediaPreview(null)}
+                className="text-sm text-teal font-semibold"
+              >
+                Remove photo
+              </button>
+            </div>
+          )}
         </PageSection>
+
+        <ImageCropperModal
+          open={drinkImageCropOpen}
+          imageSrc={drinkImageForCrop}
+          title="Adjust Photo"
+          aspect={4 / 5}
+          cropShape="rect"
+          onCancel={() => {
+            setDrinkImageCropOpen(false);
+            setDrinkImageForCrop(null);
+          }}
+          onSave={handleDrinkImageCropSave}
+        />
       </AppPage>
     );
   }
