@@ -1,6 +1,7 @@
 "use client";
 
 import { AppButton } from "@/components/common/AppButton";
+import { AppText } from "@/components/common/AppText";
 
 interface JoinCodeSheetProps {
   isOpen: boolean;
@@ -19,8 +20,8 @@ export function JoinCodeSheet({
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex items-end">
       <div className="w-full bg-white rounded-t-2xl p-6">
-        <h2 className="text-lg font-semibold text-[#001524]">Join with Code</h2>
-        <p className="mt-1 text-sm text-[#8B8680]">Coming soon</p>
+        <AppText as="h2" variant="cardTitle">Join with Code</AppText>
+        <AppText as="p" variant="meta" className="mt-1">Coming soon</AppText>
         <AppButton
           variant="muted"
           size="md"

@@ -7,23 +7,23 @@ interface TrendIndicatorProps {
 export function TrendIndicator({ trend }: TrendIndicatorProps) {
   if (!trend || trend === "same") {
     return (
-      <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[#FAFAF8]">
-        <Minus className="h-3 w-3 text-[#8B8680]" />
+      <span className="flex h-4 w-4 items-center justify-center rounded-full bg-off-white">
+        <Minus className="h-3 w-3 text-dark-gray" />
       </span>
     );
   }
 
   if (trend === "up") {
     return (
-      <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[#DFF4F2]">
-        <ArrowUp className="h-3 w-3 text-[#15616d]" />
+      <span className="flex h-4 w-4 items-center justify-center rounded-full bg-teal/10">
+        <ArrowUp className="h-3 w-3 text-teal" />
       </span>
     );
   }
 
   return (
-    <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[#ffecd1]">
-      <ArrowDown className="h-3 w-3 text-[#ff7d00]" />
+    <span className="flex h-4 w-4 items-center justify-center rounded-full bg-papaya">
+      <ArrowDown className="h-3 w-3 text-orange" />
     </span>
   );
 }

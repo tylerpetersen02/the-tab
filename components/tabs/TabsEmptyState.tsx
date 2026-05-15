@@ -1,4 +1,5 @@
 import { Inbox } from "lucide-react";
+import { AppText } from "@/components/common/AppText";
 
 interface TabsEmptyStateProps {
   title: string;
@@ -11,9 +12,9 @@ export function TabsEmptyState({
 }: TabsEmptyStateProps) {
   return (
     <div className="flex flex-col items-center justify-center py-12 text-center">
-      <Inbox className="h-12 w-12 text-[#D4D0CC] mb-3" />
-      <h3 className="text-sm font-semibold text-[#001524]">{title}</h3>
-      <p className="mt-1 text-xs text-[#8B8680]">{description}</p>
+      <Inbox className="h-12 w-12 text-medium-gray mb-3" />
+      <AppText as="h3" variant="body">{title}</AppText>
+      <AppText as="p" variant="meta" className="mt-1">{description}</AppText>
     </div>
   );
 }

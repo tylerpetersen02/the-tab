@@ -998,7 +998,9 @@ function YourContribution({ activeTab }: { activeTab: ActiveTab }) {
       </div>
 
       {currentUser.leftAt && (
-        <InfoPill label={currentUser.leftAt} tone="orange" className="mt-4" />
+        <div className="mt-4">
+          <InfoPill label={currentUser.leftAt} tone="orange" />
+        </div>
       )}
     </CardShell>
   );

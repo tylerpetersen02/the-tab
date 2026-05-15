@@ -17,7 +17,7 @@ export function BottomNav() {
 
   return (
     <nav
-      className="fixed inset-x-0 bottom-0 z-50 pointer-events-none bg-white border-t border-[#D4D0CC] shadow-md"
+      className="fixed inset-x-0 bottom-0 z-50 pointer-events-none bg-white border-t border-medium-gray shadow-md"
       style={{
         height: "calc(64px + max(0px, env(safe-area-inset-bottom)))",
       }}
@@ -37,7 +37,7 @@ export function BottomNav() {
               key={tab.href}
               href={tab.href}
               className={`flex items-center justify-center flex-1 transition-colors ${
-                isActive ? "text-[#ff7d00]" : "text-teal"
+                isActive ? "text-orange" : "text-teal"
               }`}
             >
               <Icon size={26} />
