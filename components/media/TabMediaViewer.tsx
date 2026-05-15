@@ -97,9 +97,9 @@ export function TabMediaViewer({
     }[current.drinkType] || current.drinkType;
 
   return (
-    <div className="fixed inset-0 z-[80] flex h-dvh flex-col overflow-hidden bg-ink">
+    <div className="fixed inset-0 z-[80] grid grid-rows-[auto_1fr_auto] h-dvh overflow-hidden bg-ink">
       {/* Header */}
-      <header className="shrink-0 flex items-center justify-between px-4 py-3 bg-gradient-to-b from-ink/60 to-transparent">
+      <header className="flex items-center justify-between px-4 py-3 bg-gradient-to-b from-ink/60 to-transparent">
         <button
           onClick={onClose}
           className="p-2 hover:bg-white/20 rounded-full transition-colors"
@@ -122,7 +122,7 @@ export function TabMediaViewer({
 
       {/* Media Area */}
       <main
-        className="flex min-h-0 flex-1 items-center justify-center overflow-hidden px-4 touch-none select-none"
+        className="flex min-h-0 items-center justify-center overflow-hidden px-4 touch-none select-none"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
@@ -143,7 +143,7 @@ export function TabMediaViewer({
       </main>
 
       {/* Bottom Metadata Sheet */}
-      <section className="shrink-0 rounded-t-[28px] bg-white shadow-lg p-5 space-y-4">
+      <section className="rounded-t-[28px] bg-white shadow-lg p-5 space-y-4 overflow-y-auto">
         {/* User & Drink Info */}
         <div className="flex items-center gap-3">
           <UserAvatar
