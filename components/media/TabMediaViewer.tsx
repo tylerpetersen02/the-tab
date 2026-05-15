@@ -97,7 +97,7 @@ export function TabMediaViewer({
     }[current.drinkType] || current.drinkType;
 
   return (
-    <div className="fixed inset-0 z-[80] grid grid-rows-[auto_1fr_auto] h-dvh overflow-hidden bg-ink">
+    <div className="fixed inset-0 z-[80] grid h-dvh grid-rows-[auto_minmax(0,1fr)_190px] overflow-hidden bg-ink">
       {/* Header */}
       <header className="flex items-center justify-between px-4 py-3 bg-gradient-to-b from-ink/60 to-transparent">
         <button
@@ -143,7 +143,7 @@ export function TabMediaViewer({
       </main>
 
       {/* Bottom Metadata Sheet */}
-      <section className="rounded-t-[28px] bg-white shadow-lg p-5 space-y-4 overflow-y-auto">
+      <section className="h-[190px] overflow-y-auto rounded-t-[28px] bg-white shadow-lg p-5 space-y-4">
         {/* User & Drink Info */}
         <div className="flex items-center gap-3">
           <UserAvatar
