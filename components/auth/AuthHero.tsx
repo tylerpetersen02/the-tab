@@ -13,7 +13,7 @@ export function AuthHero() {
 
         <div>
           <AppText variant="cardTitle" className="text-white">
-            Open tabs. Add drinks.
+            "See you at the bottom..."
           </AppText>
         </div>
 

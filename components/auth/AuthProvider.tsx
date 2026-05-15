@@ -75,12 +75,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const signOut = async () => {
-    const result = await authService.signOut();
-    if (!result.error) {
+    try {
+      await authService.signOut();
       setUser(null);
       setSession(null);
+      return { error: null };
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Sign out failed";
+      return { error: errorMessage };
     }
-    return result;
   };
 
   const refreshProfile = async () => {
