@@ -32,7 +32,7 @@ export default function ForgotPasswordPage() {
       <AuthLayout>
         <div className="space-y-6">
           <div className="text-center">
-            <AppText as="h1" variant="pageTitle" className="text-orange mb-2">
+            <AppText as="h1" variant="brand" className="text-teal mb-2">
               The Tab
             </AppText>
           </div>
@@ -72,7 +72,7 @@ export default function ForgotPasswordPage() {
     <AuthLayout>
       <div className="space-y-6">
         <div className="text-center">
-          <AppText as="h1" variant="pageTitle" className="text-orange mb-2">
+          <AppText as="h1" variant="brand" className="text-teal mb-2">
             The Tab
           </AppText>
           <AppText variant="body" className="text-dark-gray">
@@ -94,7 +94,7 @@ export default function ForgotPasswordPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <AppText variant="label">Email</AppText>
+              <AppText variant="meta" className="text-ink">Email</AppText>
               <input
                 type="email"
                 value={email}
@@ -106,7 +106,7 @@ export default function ForgotPasswordPage() {
             </div>
 
             <AppButton
-              onClick={handleSubmit}
+              type="submit"
               disabled={loading}
               size="lg"
               fullWidth
@@ -117,9 +117,9 @@ export default function ForgotPasswordPage() {
 
           <div className="border-t border-light-gray pt-6">
             <Link href="/login">
-              <AppButton variant="secondary" size="md" fullWidth>
+              <AppText variant="meta" className="text-teal hover:underline block text-center">
                 ← Back to Log In
-              </AppButton>
+              </AppText>
             </Link>
           </div>
         </div>

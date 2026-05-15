@@ -8,8 +8,6 @@ import { AppButton } from "@/components/common/AppButton";
 import { inputStyles } from "@/lib/inputStyles";
 import { useAuth } from "@/components/auth/useAuth";
 import { AuthLayout } from "@/components/auth/AuthLayout";
-import { AuthCard } from "@/components/auth/AuthCard";
-import { AuthMessage } from "@/components/auth/AuthMessage";
 import { AuthHero } from "@/components/auth/AuthHero";
 
 export default function LoginPage() {
@@ -39,7 +37,7 @@ export default function LoginPage() {
     <AuthLayout>
       <div className="space-y-6">
         <div className="text-center">
-          <AppText as="h1" variant="pageTitle" className="text-orange mb-2">
+          <AppText as="h1" variant="brand" className="text-teal mb-2">
             The Tab
           </AppText>
           <AppText variant="body" className="text-dark-gray">
@@ -58,7 +56,7 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <AppText variant="label">Email</AppText>
+              <AppText variant="meta" className="text-ink">Email</AppText>
               <input
                 type="email"
                 value={email}
@@ -70,7 +68,7 @@ export default function LoginPage() {
             </div>
 
             <div className="space-y-2">
-              <AppText variant="label">Password</AppText>
+              <AppText variant="meta" className="text-ink">Password</AppText>
               <input
                 type="password"
                 value={password}
@@ -83,7 +81,7 @@ export default function LoginPage() {
 
             {error && (
               <div className="rounded-lg bg-red-50 p-3">
-                <AppText variant="caption" className="text-red-700">
+                <AppText variant="bodySmall" className="text-red-700">
                   {error}
                 </AppText>
               </div>
@@ -98,7 +96,7 @@ export default function LoginPage() {
             </div>
 
             <AppButton
-              onClick={handleSubmit}
+              type="submit"
               disabled={loading}
               size="lg"
               fullWidth
@@ -107,17 +105,15 @@ export default function LoginPage() {
             </AppButton>
           </form>
 
-          <div className="border-t border-light-gray pt-6">
-            <div className="rounded-lg bg-orange/5 p-4 text-center">
-              <AppText variant="meta" className="text-dark-gray">
-                New here?
+          <div className="rounded-lg bg-orange/5 p-4 text-center">
+            <AppText variant="bodySmall" className="text-dark-gray">
+              New here?
+            </AppText>
+            <Link href="/signup">
+              <AppText variant="body" className="mt-2 text-teal">
+                Open your first tab
               </AppText>
-              <Link href="/signup">
-                <AppButton variant="secondary" size="md" fullWidth className="mt-3">
-                  Create Account
-                </AppButton>
-              </Link>
-            </div>
+            </Link>
           </div>
         </div>
       </div>
