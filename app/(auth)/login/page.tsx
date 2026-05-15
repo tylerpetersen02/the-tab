@@ -87,14 +87,6 @@ export default function LoginPage() {
               </div>
             )}
 
-            <div className="text-right">
-              <Link href="/forgot-password">
-                <AppText variant="meta" className="text-teal hover:underline">
-                  Forgot password?
-                </AppText>
-              </Link>
-            </div>
-
             <AppButton
               type="submit"
               disabled={loading}
@@ -104,6 +96,14 @@ export default function LoginPage() {
               {loading ? "Logging in..." : "Log In"}
             </AppButton>
           </form>
+
+          <div className="text-center">
+            <Link href="/forgot-password">
+              <AppText variant="meta" className="text-teal hover:underline">
+                Forgot password?
+              </AppText>
+            </Link>
+          </div>
 
           <div className="rounded-lg bg-orange/5 p-4 text-center">
             <AppText variant="bodySmall" className="text-dark-gray">
