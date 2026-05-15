@@ -1,24 +1,9 @@
 "use client";
 
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Play } from "lucide-react";
 import { CardShell } from "@/components/common/CardShell";
 import { AppText } from "@/components/common/AppText";
-
-interface TabMediaItem {
-  id: string;
-  drinkId: string;
-  userId: string;
-  userName: string;
-  userInitials: string;
-  type: "image" | "video";
-  url: string;
-  thumbnailUrl?: string;
-  caption?: string;
-  drinkType: string;
-  drinkNumber?: number;
-  ounces?: number;
-  createdAt: string;
-}
+import { TabMediaItem } from "./types";
 
 interface TabMemoriesPreviewProps {
   media: TabMediaItem[];
@@ -33,35 +18,36 @@ export function TabMemoriesPreview({
 }: TabMemoriesPreviewProps) {
   if (!media || media.length === 0) {
     return (
-      <CardShell className="p-4">
-        <div className="text-center space-y-2">
-          <AppText variant="cardTitle">Tab Memories</AppText>
-          <AppText variant="body" className="text-dark-gray">
-            No memories yet. Add a photo or video with your next drink.
-          </AppText>
-        </div>
+      <CardShell variant="default" className="p-4">
+        <AppText variant="cardTitle" className="mb-1">
+          Tab Memories
+        </AppText>
+        <AppText variant="meta" className="text-dark-gray">
+          No memories yet. Add a photo or video with your next drink.
+        </AppText>
       </CardShell>
     );
   }
 
-  const displayCount = 4;
-  const visibleMedia = media.slice(0, displayCount);
-  const overflow = Math.max(0, media.length - displayCount);
+  const maxTiles = 4;
+  const hasOverflow = media.length > maxTiles;
+  const visibleMedia = hasOverflow ? media.slice(0, maxTiles - 1) : media.slice(0, maxTiles);
+  const overflow = media.length - (hasOverflow ? maxTiles - 1 : media.length);
 
   return (
-    <CardShell className="p-4">
-      <div className="space-y-3">
+    <CardShell variant="default" className="p-4">
+      <div className="space-y-4">
         {/* Header */}
         <div className="flex items-center justify-between">
           <AppText variant="cardTitle">Tab Memories</AppText>
           <button
             onClick={onViewAll}
-            className="flex items-center gap-1 text-teal hover:text-teal/80 transition-colors"
+            className="flex items-center gap-1 hover:opacity-80 transition-opacity"
           >
             <AppText variant="meta" className="text-teal">
               View All
             </AppText>
-            <ChevronRight className="h-4 w-4" />
+            <ChevronRight className="h-4 w-4 text-teal" />
           </button>
         </div>
 
@@ -71,25 +57,37 @@ export function TabMemoriesPreview({
             <button
               key={item.id}
               onClick={() => onThumbnailClick(idx)}
-              className="flex-1 aspect-square rounded-[22px] overflow-hidden bg-light-gray hover:opacity-80 transition-opacity"
+              className="flex-1 aspect-square rounded-[20px] overflow-hidden bg-light-gray border border-medium-gray hover:opacity-90 transition-opacity relative group"
             >
               <img
                 src={item.thumbnailUrl || item.url}
                 alt={`Memory ${idx + 1}`}
                 className="w-full h-full object-cover"
               />
+              {item.type === "video" && (
+                <div className="absolute inset-0 flex items-center justify-center bg-ink/20 group-hover:bg-ink/30 transition-colors">
+                  <Play className="h-5 w-5 text-white fill-white" />
+                </div>
+              )}
             </button>
           ))}
 
-          {/* Overflow Indicator */}
-          {overflow > 0 && (
+          {/* Overflow Tile with Image Overlay */}
+          {hasOverflow && (
             <button
               onClick={onViewAll}
-              className="flex-1 aspect-square rounded-[22px] bg-medium-gray hover:bg-dark-gray transition-colors flex items-center justify-center"
+              className="flex-1 aspect-square rounded-[20px] overflow-hidden border border-medium-gray relative group"
             >
-              <AppText variant="cardTitle" className="text-white">
-                +{overflow}
-              </AppText>
+              <img
+                src={media[maxTiles - 1]?.thumbnailUrl || media[maxTiles - 1]?.url}
+                alt="More memories"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-ink/50 group-hover:bg-ink/60 transition-colors flex items-center justify-center">
+                <AppText variant="cardTitle" className="text-white">
+                  +{overflow}
+                </AppText>
+              </div>
             </button>
           )}
         </div>

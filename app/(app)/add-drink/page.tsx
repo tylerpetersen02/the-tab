@@ -32,6 +32,7 @@ import { gradients } from "@/lib/gradients";
 import { inputStyles, selectStyles, textareaStyles } from "@/lib/inputStyles";
 import { TabMemoriesPreview } from "@/components/media/TabMemoriesPreview";
 import { TabMediaViewer } from "@/components/media/TabMediaViewer";
+import type { TabMediaItem } from "@/components/media/types";
 
 type Screen = "gate" | "create_tab" | "join_tab" | "current_tab" | "add_drink";
 
@@ -59,23 +60,6 @@ type ActivityItem = {
   user: string;
   detail: string;
   time: string;
-};
-
-type TabMediaItem = {
-  id: string;
-  drinkId: string;
-  userId: string;
-  userName: string;
-  userInitials: string;
-  userAvatarUrl?: string | null;
-  type: "image" | "video";
-  url: string;
-  thumbnailUrl?: string;
-  caption?: string;
-  drinkType: "beer" | "wine" | "seltzer" | "shot" | "cocktail";
-  drinkNumber?: number;
-  ounces?: number;
-  createdAt: string;
 };
 
 type ActiveTab = {
