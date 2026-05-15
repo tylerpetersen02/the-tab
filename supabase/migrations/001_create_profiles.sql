@@ -16,27 +16,36 @@ create table if not exists public.profiles (
 );
 
 -- Add index on username for quick lookups
-create index if not exists profiles_username_idx on public.profiles(username);
+create index if not exists profiles_username_idx
+on public.profiles(username);
 
 -- 2. Create updated_at trigger function
 create or replace function public.set_updated_at()
-returns trigger as 
+returns trigger
+language plpgsql
+as $$
 begin
   new.updated_at = now();
   return new;
 end;
- language plpgsql;
+$$;
 
--- Apply trigger to profiles
+-- Apply updated_at trigger to profiles
 drop trigger if exists profiles_set_updated_at on public.profiles;
 
 create trigger profiles_set_updated_at
 before update on public.profiles
-for each row execute function public.set_updated_at();
+for each row
+execute function public.set_updated_at();
 
--- 3. Create profile creation trigger (auto-create profile on new user signup)
+-- 3. Create profile creation trigger function
+-- Auto-create profile when a new auth user signs up
 create or replace function public.handle_new_user()
-returns trigger as 
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
 begin
   insert into public.profiles (
     id,
@@ -49,25 +58,32 @@ begin
     new.id,
     new.email,
     coalesce(new.raw_user_meta_data->>'display_name', 'New User'),
-    new.raw_user_meta_data->>'username',
+    nullif(new.raw_user_meta_data->>'username', ''),
     upper(left(coalesce(new.raw_user_meta_data->>'display_name', 'NU'), 2))
   )
   on conflict (id) do nothing;
 
   return new;
 end;
- language plpgsql security definer;
+$$;
 
 -- Apply trigger to auth.users
 drop trigger if exists on_auth_user_created on auth.users;
 
 create trigger on_auth_user_created
 after insert on auth.users
-for each row execute function public.handle_new_user();
+for each row
+execute function public.handle_new_user();
 
--- 4. Enable RLS on profiles (basic, will expand in Phase 8)
+-- 4. Enable RLS on profiles
 alter table public.profiles enable row level security;
 
--- Temporary: Allow all access while developing (remove in Phase 8)
-create policy "profiles_all_access" on public.profiles
-  for all using (true) with check (true);
+-- Temporary development policy.
+-- Remove/replace this in the real RLS phase (Phase 8).
+drop policy if exists "profiles_all_access" on public.profiles;
+
+create policy "profiles_all_access"
+on public.profiles
+for all
+using (true)
+with check (true);
