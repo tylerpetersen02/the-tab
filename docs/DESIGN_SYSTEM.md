@@ -2,277 +2,81 @@
 
 ## Overview
 
-The Tab uses a cohesive, premium design system built on Tailwind v4 with a custom color palette, typography system, and reusable components. All UI should use design system components and tokens—no raw hex values or custom styles in component code.
-
----
+The Tab uses a cohesive, mobile-first design system built with Tailwind CSS and shared React components. All UI must use the established system; one-off styles are not permitted.
 
 ## Color Palette
 
-### Primary Colors
-- **Orange** `#ff7d00` — Primary action, CTAs, highlights
-- **Teal** `#15616d` — Secondary action, focus states, navigation
+**Core Colors** (defined in `lib/design-tokens.ts`):
+- `ink` — #001524 (primary text/dark elements)
+- `background` / `off-white` — #FAFAF8 (page background)
+- `card` / `white` — #FFFFFF (card backgrounds)
+- `muted` — #8B8680 (secondary/disabled text)
+- `border` / `medium-gray` — #D4D0CC (dividers, borders)
+- `dark-gray` — #6B7280 (tertiary text)
+- `light-gray` — #F3F4F6 (hover states, subtle backgrounds)
 
-### Neutral Colors
-- **Off-white** `#FAFAF8` — Page background, muted surfaces
-- **White** `#FFFFFF` — Card backgrounds, input fields
-- **Light Gray** `#F3F4F6` — Subtle dividers, inactive states
-- **Medium Gray** `#D4D0CC` — Borders, input borders
-- **Dark Gray** `#8B8680` — Secondary text, metadata
-- **Ink** `#001524` — Primary text, headings
-- **Black** `#0A0A0A` — Strong contrast (rare)
+**Accent Colors**:
+- `orange` — #ff7d00 (primary CTA, live indicators)
+- `teal` — #15616d (secondary CTA, navigation, links)
+- `papaya` — #ffecd1 (subtle backgrounds)
 
-### Special Colors
-- **Papaya** `#ffecd1` — Accent, badges, highlights
-- **Brandy** `#78290f` — Dark/moody accents
-- **Chart Colors** — Teal, papaya, light teal, sky blue (for data viz)
-
-### Usage Rules
-- **Never use raw hex values in component code** — Use Tailwind color tokens (e.g., `text-ink`, `bg-orange`)
-- **Text colors**: Use `text-ink` (primary), `text-dark-gray` (secondary), `text-medium-gray` (tertiary)
-- **Background colors**: Use `bg-off-white` (page), `bg-white` (cards), `bg-orange` (primary action)
-- **Border colors**: Use `border-medium-gray` (default), `border-teal` (focus)
-
----
+**Rule**: Use Tailwind color classes, never raw hex values in components.
 
 ## Typography System
 
-### Font
-- **Family**: Nunito Sans (with system fallback)
-- **Variable font**: Supports weights 200–1000 and optical sizing
-- **Letter spacing**: `-0.01em` baseline (optimized for readability)
+**Component**: `AppText` (required for all text)
 
-### Text Variants (AppText component)
+**Variants**: brand, pageTitle, cardTitle, body, bodySmall, meta, tinyLabel, statValue, statLabel
 
-| Variant | Size | Weight | Usage |
-|---------|------|--------|-------|
-| `brand` | 34px | Black (900) | Logo mark, hero statement |
-| `pageTitle` | 28px | Black (900) | Page headings (Feed, Tabs, Leaderboard) |
-| `pageSubtitle` | 13px | Semibold | Subtitle below page title |
-| `sectionLabel` | 13px | Black (900) | Section headers, uppercase |
-| `cardTitle` | 18px | Black (900) | Card/section headings |
-| `body` | 14px | Semibold | Prose, description text, form labels |
-| `bodySmall` | 12px | Semibold | Button text, compact descriptions |
-| `meta` | 12px | Semibold | Timestamp, metadata, secondary info |
-| `tinyLabel` | 10px | Black (900) | Badge labels, tiny text, uppercase |
-| `statValue` | 24px | Black (900) | Large stat numbers |
-| `statLabel` | 10px | Black (900) | Stat label below number, uppercase |
+**Rule**: Every text element must use `<AppText variant="...">`. Do not use hardcoded text classes.
 
-### Usage Rules
-- **Always use `AppText` component** — Never use raw Tailwind text classes (e.g., `text-lg font-bold`)
-- **Choose variant semantically** — Don't combine variants; use appropriate variant for context
-- **Respect text color defaults** — Most variants include `text-ink`; override only when needed
+## Button System
 
----
+**Component**: `AppButton` (required for all buttons)
 
-## Component System
+**Variants**: primary, secondary, outline, muted, ghost, danger
+**Sizes**: sm, md, lg, icon
 
-### Core Components (Always Use)
+**Rule**: Always use `<AppButton variant="..." size="...">`. Do not create custom button styles.
 
-#### **AppText**
-Typography component for all text content.
-```tsx
-<AppText variant="pageTitle">Page Title</AppText>
-<AppText variant="body">Body copy</AppText>
-<AppText variant="meta">Timestamp</AppText>
-```
+## Card System
 
-#### **AppButton**
-Button component with 6 variants and 4 sizes.
+**Component**: `CardShell` (required for all cards)
 
-**Variants:**
-- `primary` — Orange button (main CTAs)
-- `secondary` — Teal button (secondary action)
-- `outline` — White with border (tertiary)
-- `muted` — Off-white (low priority)
-- `ghost` — Transparent (icon buttons, minimal)
-- `danger` — Red (destructive actions, rarely used)
+**Variants**: default, feed, compact, score
 
-**Sizes:**
-- `sm` — 36px height, small text
-- `md` — 44px height, small text (default)
-- `lg` — 56px height, card title text
-- `icon` — 40px square (icon-only buttons)
+**Rule**: All card-like containers must use `<CardShell variant="...">`. Do not use custom div-based cards.
 
-**Properties:**
-- `fullWidth` — Stretches to container width
-- `disabled` — Reduces opacity, prevents interaction
+## Spacing System
 
-```tsx
-<AppButton primary >Main Action</AppButton>
-<AppButton variant="secondary" size="lg" fullWidth>Secondary Large</AppButton>
-<AppButton variant="ghost" size="icon"><Icon /></AppButton>
-```
+- Vertical gap between sections: `mt-6` (on `<PageSection>`)
+- Horizontal padding: `px-4` (on `<PageSection>`)
+- Component gaps: `mt-4` within sections
+- Tight gaps: `mt-2` for related elements
+- Max width: `max-w-md` (mobile-first)
+- Bottom padding: `pb-44` (account for bottom nav)
 
-#### **CardShell**
-Card/container component with consistent styling and shadow.
+## Form Inputs
 
-**Variants:**
-- `default` — Standard card (28px radius)
-- `feed` — Stronger shadow (for feed posts)
-- `compact` — Smaller radius (24px)
-- `score` — Score display cards
+**Shared exports** from `lib/inputStyles.ts`:
+- `inputStyles` — text input base styles
+- `selectStyles` — select dropdown base styles
+- `textareaStyles` — textarea base styles
 
-```tsx
-<CardShell>Card content</CardShell>
-<CardShell variant="feed">Feed post</CardShell>
-```
+**Rule**: Always reference shared input classes. Do not define form styles in-component.
 
-#### **AppPage**
-Page wrapper with consistent max-width, padding, and bottom nav spacing.
-```tsx
-<AppPage>Page content</AppPage>
-```
+## Shared Components
 
-#### **AppHeader**
-Header component with title, notification bell, profile icon.
-```tsx
-<AppHeader title="Page Title" />
-```
+**Container**: AppPage, PageSection, AppHeader, CardShell
+**Navigation**: BackButton, SectionHeader
+**Info**: InfoPill, StatusBadge, FilterPills, SegmentedControl
+**User**: UserAvatar, AvatarStack
 
-#### **PageSection**
-Spacing and rhythm wrapper for page sections.
-```tsx
-<PageSection>Content</PageSection>
-```
+## Layout Principles
 
-#### **UserAvatar**
-User avatar with initials in circle.
-```tsx
-<UserAvatar name="Tyler" initials="TP" />
-```
-
-#### **AvatarStack**
-Multiple avatars in a compressed/overlapping stack.
-```tsx
-<AvatarStack avatars={members} />
-```
-
-#### **StatusBadge**
-Status indicator badge ("Live", "Closed", "Verified").
-```tsx
-<StatusBadge status="live" />
-```
-
-#### **InfoPill**
-Small badge/chip for metadata ("Private", "Invite Only", etc.).
-```tsx
-<InfoPill label="Private" icon={Lock} />
-```
-
-#### **BackButton**
-Navigation back button.
-```tsx
-<BackButton onClick={() => goBack()} />
-```
-
----
-
-## Layout & Spacing
-
-### Max Width
-- **Mobile-first**: Default width 100%, max at `md` breakpoint (768px)
-- **Container max**: `max-w-md` (448px) for main content
-- **Padding**: 16px on mobile (safe area aware)
-
-### Spacing Scale
-```
-xs:  2px
-sm:  4px
-md:  8px
-lg:  12px
-xl:  16px
-2xl: 24px
-3xl: 32px
-```
-
-### Rhythm
-- **Page sections**: 24px gap (use `PageSection`)
-- **Card internal padding**: 16px (default), 12px (compact)
-- **List items**: 12px gap
-- **Form fields**: 12px gap
-
----
-
-## Shadows
-
-| Name | Usage |
-|------|-------|
-| `feedCard` | Feed posts and prominent cards |
-| `tabsCard` | Tab list items |
-| `button` | Button elevation (shadow-sm) |
-| `icon` | Icon circle backgrounds |
-
----
-
-## Border Radius
-
-| Name | Value | Usage |
-|------|-------|-------|
-| `button` | 16px (small), full (md/lg) | Buttons |
-| `card` | 28px | Cards, modals |
-| `pill` | 100% | Pills, badges, avatars |
-| `media` | 26px | Images, video |
-
----
-
-## Input Styles
-
-All form inputs use consistent styling (`inputStyles` from lib):
-- 16px border radius
-- Medium gray border
-- White background
-- Teal focus state with ring
-- Placeholder text is dark gray
-
-```tsx
-<input className={inputStyles} placeholder="Input" />
-<select className={selectStyles}><option>Select</option></select>
-<textarea className={textareaStyles} placeholder="Type..."></textarea>
-```
-
----
-
-## Gradients (Preset Classes)
-
-Use predefined gradient classes from `lib/gradients.ts`:
-- `gradient-alpha` — Main dashboard hero
-- `gradient-golfBoys` — Teal-to-teal
-- `gradient-breweryCrawl` — Complex multi-stop
-- And others—check file for all available
-
-```tsx
-<div className="bg-gradient-alpha"></div>
-```
-
----
-
-## Design Tokens Export
-
-All design tokens are exported as constants:
-- `lib/design-tokens.ts` — Colors, shadows, radius, sizing, spacing, typography
-- `lib/inputStyles.ts` — Form input classes
-- `lib/gradients.ts` — Gradient presets
-- `lib/shadows.ts` — Shadow definitions
-- `lib/utils.ts` — `cn()` utility (clsx + tailwind-merge)
-
-**Import pattern:**
-```tsx
-import { colors, shadows, radius } from "@/lib/design-tokens";
-import { inputStyles } from "@/lib/inputStyles";
-```
-
----
-
-## Implementation Check
-
-Before submitting code, verify:
-- [ ] All text uses `<AppText>` with appropriate variant
-- [ ] All buttons use `<AppButton>` with appropriate variant/size
-- [ ] All cards use `<CardShell>` with correct variant
-- [ ] No raw `class="text-*" or `class="font-*"` in components
-- [ ] No raw hex colors (always use Tailwind tokens)
-- [ ] All colors reference design tokens (not variables)
-- [ ] Form inputs use `inputStyles`, `selectStyles`, or `textareaStyles`
-- [ ] Page wrapped in `<AppPage>` with `<AppHeader>`
-- [ ] Sections use `<PageSection>` for rhythm
-- [ ] Max-width applied at container level
+1. **Mobile-First**: All designs target mobile (max-w-md)
+2. **Consistent Padding**: Always `px-4` for horizontal padding
+3. **Rhythm**: `mt-6` between sections, `mt-4` between components
+4. **Shadows Over Borders**: Use shadows for depth
+5. **White Cards**: Cards are always white on off-white background
+6. **No Raw Styles**: Every component must use the design system
