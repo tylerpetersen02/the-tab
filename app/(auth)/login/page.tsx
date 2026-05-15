@@ -49,78 +49,77 @@ export default function LoginPage() {
 
         <AuthHero />
 
-        <AuthCard>
-          <div className="space-y-6">
-            <AuthMessage
-              title="Log in"
-              subtitle="Use the account tied to your tabs and history."
-            />
+        <div className="space-y-6">
+          <div className="text-center">
+            <AppText as="h2" variant="cardTitle">
+              Log in
+            </AppText>
+          </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <AppText variant="label">Email</AppText>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  className={inputStyles}
-                  required
-                />
-              </div>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <AppText variant="label">Email</AppText>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                className={inputStyles}
+                required
+              />
+            </div>
 
-              <div className="space-y-2">
-                <AppText variant="label">Password</AppText>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className={inputStyles}
-                  required
-                />
-              </div>
+            <div className="space-y-2">
+              <AppText variant="label">Password</AppText>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className={inputStyles}
+                required
+              />
+            </div>
 
-              {error && (
-                <div className="rounded-lg bg-red-50 p-3">
-                  <AppText variant="caption" className="text-red-700">
-                    {error}
-                  </AppText>
-                </div>
-              )}
-
-              <div className="text-right">
-                <Link href="/forgot-password">
-                  <AppText variant="meta" className="text-teal hover:underline">
-                    Forgot password?
-                  </AppText>
-                </Link>
-              </div>
-
-              <AppButton
-                onClick={handleSubmit}
-                disabled={loading}
-                size="lg"
-                fullWidth
-              >
-                {loading ? "Logging in..." : "Log In"}
-              </AppButton>
-            </form>
-
-            <div className="border-t border-light-gray pt-6">
-              <div className="rounded-lg bg-orange/5 p-4 text-center">
-                <AppText variant="meta" className="text-dark-gray">
-                  New here?
+            {error && (
+              <div className="rounded-lg bg-red-50 p-3">
+                <AppText variant="caption" className="text-red-700">
+                  {error}
                 </AppText>
-                <Link href="/signup">
-                  <AppButton variant="secondary" size="md" fullWidth className="mt-3">
-                    Create Account
-                  </AppButton>
-                </Link>
               </div>
+            )}
+
+            <div className="text-right">
+              <Link href="/forgot-password">
+                <AppText variant="meta" className="text-teal hover:underline">
+                  Forgot password?
+                </AppText>
+              </Link>
+            </div>
+
+            <AppButton
+              onClick={handleSubmit}
+              disabled={loading}
+              size="lg"
+              fullWidth
+            >
+              {loading ? "Logging in..." : "Log In"}
+            </AppButton>
+          </form>
+
+          <div className="border-t border-light-gray pt-6">
+            <div className="rounded-lg bg-orange/5 p-4 text-center">
+              <AppText variant="meta" className="text-dark-gray">
+                New here?
+              </AppText>
+              <Link href="/signup">
+                <AppButton variant="secondary" size="md" fullWidth className="mt-3">
+                  Create Account
+                </AppButton>
+              </Link>
             </div>
           </div>
-        </AuthCard>
+        </div>
       </div>
     </AuthLayout>
   );

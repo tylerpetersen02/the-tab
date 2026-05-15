@@ -82,45 +82,47 @@ export default function ForgotPasswordPage() {
 
         <AuthHero />
 
-        <AuthCard>
-          <div className="space-y-6">
-            <AuthMessage
-              title="Forgot password?"
-              subtitle="Enter your email and we'll send instructions."
-            />
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <AppText variant="label">Email</AppText>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  className={inputStyles}
-                  required
-                />
-              </div>
-
-              <AppButton
-                onClick={handleSubmit}
-                disabled={loading}
-                size="lg"
-                fullWidth
-              >
-                {loading ? "Sending..." : "Send Reset Link"}
-              </AppButton>
-            </form>
-
-            <div className="border-t border-light-gray pt-6">
-              <Link href="/login">
-                <AppButton variant="secondary" size="md" fullWidth>
-                  ← Back to Log In
-                </AppButton>
-              </Link>
-            </div>
+        <div className="space-y-6">
+          <div className="text-center">
+            <AppText as="h2" variant="cardTitle">
+              Forgot password?
+            </AppText>
+            <AppText variant="meta" className="text-dark-gray mt-1">
+              Enter your email and we'll send instructions.
+            </AppText>
           </div>
-        </AuthCard>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <AppText variant="label">Email</AppText>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                className={inputStyles}
+                required
+              />
+            </div>
+
+            <AppButton
+              onClick={handleSubmit}
+              disabled={loading}
+              size="lg"
+              fullWidth
+            >
+              {loading ? "Sending..." : "Send Reset Link"}
+            </AppButton>
+          </form>
+
+          <div className="border-t border-light-gray pt-6">
+            <Link href="/login">
+              <AppButton variant="secondary" size="md" fullWidth>
+                ← Back to Log In
+              </AppButton>
+            </Link>
+          </div>
+        </div>
       </div>
     </AuthLayout>
   );
