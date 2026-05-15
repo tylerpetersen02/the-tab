@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { House, Beer, Plus, Trophy, ReceiptText } from "lucide-react";
+import { House, Beer, Plus, Trophy, ReceiptText, User } from "lucide-react";
 
 const tabs = [
   { href: "/feed", icon: House },
@@ -10,6 +10,7 @@ const tabs = [
   { href: "/add-drink", icon: Plus },
   { href: "/leaderboard", icon: Trophy },
   { href: "/receipts", icon: ReceiptText },
+  { href: "/account", icon: User },
 ];
 
 export function BottomNav() {
