@@ -20,17 +20,17 @@ export function AuthHero() {
         <div className="flex gap-2 pt-2 justify-center">
           <div className="px-3 py-1 rounded-full bg-white/20">
             <AppText variant="meta" className="text-white">
-              Drinks
+              Drink
             </AppText>
           </div>
           <div className="px-3 py-1 rounded-full bg-white/20">
             <AppText variant="meta" className="text-white">
-              Buddies
+              Socialize
             </AppText>
           </div>
           <div className="px-3 py-1 rounded-full bg-white/20">
             <AppText variant="meta" className="text-white">
-              Receipts
+              Repeat
             </AppText>
           </div>
         </div>
