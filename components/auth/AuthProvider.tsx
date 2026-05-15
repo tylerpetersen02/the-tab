@@ -2,6 +2,7 @@
 
 import { createContext, useEffect, useState } from "react";
 import { Session } from "@supabase/supabase-js";
+import { supabase } from "@/lib/supabase/client";
 import { authService } from "@/lib/auth/authService";
 import { AuthContextValue, AuthProfile } from "@/lib/auth/authTypes";
 
@@ -15,21 +16,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const initAuth = async () => {
-      const currentSession = await authService.getCurrentSession();
-      setSession(currentSession);
+    let mounted = true;
 
-      if (currentSession?.user?.id) {
-        const { data: profile } = await authService.getProfile(
-          currentSession.user.id
-        );
-        setUser(profile);
+    const loadProfile = async (session: Session | null) => {
+      if (!mounted) return;
+
+      setSession(session);
+
+      if (session?.user?.id) {
+        const profile = await authService.getProfile(session.user.id);
+        if (mounted) setUser(profile);
+      } else {
+        setUser(null);
       }
 
-      setLoading(false);
+      if (mounted) setLoading(false);
     };
 
-    initAuth();
+    authService.getCurrentSession().then((currentSession) => {
+      loadProfile(currentSession?.session ?? null);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      loadProfile(session);
+    });
+
+    return () => {
+      mounted = false;
+      subscription?.unsubscribe();
+    };
   }, []);
 
   const signIn = async (email: string, password: string) => {
